@@ -1,0 +1,47 @@
+%https://tex.stackexchange.com/questions/627211/plot-constellation
+\documentclass[tikz,14pt,border=10pt,subpreambles=true]{standalone}
+
+
+
+\usetikzlibrary{arrows.meta,
+                chains,
+                positioning,
+                quotes}
+\usepackage[skip=1ex]{subcaption}
+
+\begin{document}
+
+\tikzset{
+    arr/.style = {-Straight Barb},
+    dot/.style = {circle, fill, inner sep=2pt, outer sep=0pt,
+                  node contents={} },
+  every label/.style = {label distance=4pt,
+                        font=\footnotesize, fill=white, inner sep=1.5pt},
+every picture/.style = {scale=1.2}
+        }
+        
+        
+    
+\begin{tikzpicture}
+% axis
+\draw[arr]  (-76mm,0) -- (76mm,0) node[right] {$\Re$};
+\draw[arr]  (0,-10mm) -- (0,10mm) node[above] {$\Im$};
+% circle
+% \draw   (0,0) circle[radius=14.1mm];
+% \draw   (0,0) circle[radius=31.6mm];
+% \draw [gray] (-35mm,10mm) -- (35mm,10mm) node[right] {$A$};
+% \draw [gray] (-35mm,-10mm) -- (35mm,-10mm) node[right] {$-A$};
+\foreach \i [count=\j] in {-7,-5, -3, -1, 1, 3, 5, 7}
+{
+\draw [gray] (\i*10 mm,-8mm) -- (\i*10 mm,8mm) node[above] {$\i A$};
+\filldraw[black] (\i*10 mm,0) circle (2pt);
+% \pgfmathsetmacro{\angle}{\j*90-45}
+% \node at (\angle:15mm) [dot, label=\angle:\i];
+}
+
+
+
+\end{tikzpicture}
+
+ 
+\end{document}

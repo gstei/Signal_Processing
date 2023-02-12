@@ -1,0 +1,28 @@
+
+
+\documentclass{standalone}
+\usepackage{pgfplotstable}
+\pgfplotsset{compat=1.12}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{semilogyaxis}
+        [
+           log ticks with fixed point,
+           width=12.0cm,
+           height=6cm,
+            scale only axis,
+            xmin=-5e5, xmax=5e5,
+            ymin=1e-7, ymax=1e-4,
+            grid=both,
+            domain=-5e5:5e5,
+            samples=400,
+            xlabel={Frequency: $f$},
+           ylabel={$|H(f)|$},
+           % label style={% erst nach Option axis lines verwenden
+           %  at={(ticklabel cs:0.5)},anchor=near ticklabel,sloped},
+        ]
+        \addplot+[mark=none, line width = 1.5] {8e-6*abs(sin(deg(x*pi*8e-6))/(x*8e-6)}; 
+    \end{semilogyaxis}        
+\end{tikzpicture}
+\end{document}

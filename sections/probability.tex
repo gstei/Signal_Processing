@@ -1,0 +1,38 @@
+\section{Formulas}
+\subsection{Probability}
+\subsubsection{Q-funciton}
+\begin{equation}\label{q-funciton}
+Q(x)=\frac{1}{\sqrt{2 \pi}} \int_x^{\infty} \exp \left(-\frac{u^2}{2}\right) d u
+\end{equation}
+\subsubsection{Binomialverteilung}
+Ein Bernoulli-Experiment mit den beiden sich gegenseitig ausschliessenden Ergebnissen (Ereignissen) $A$ und $\bar{A}$ werde $n$-mal nacheinander ausgefuehrt (sog. mehrstufiges Bernoulli-Experiment vom Umfang $n$ ). Dann genuegt die diskrete Zufallsvariable
+$$
+    \text{$X=$ Anzahl der Versuche, in denen das Ereignis A eintritt}
+$$
+der sog. Binomialverteilung mit der Wahrscheinlichkeitsfunktion
+\begin{equation}\label{eq:binomial_function}
+    f(x)=P(X=x)=\left(\begin{array}{c}
+    n \\
+    x
+    \end{array}\right) p^x \cdot q^{n-x} \quad(x=0,1,2, \ldots, n)
+\end{equation}
+
+und der zugehoerigen Verteilungsfunktion
+$$
+F(x)=P(X \leq x)=\sum_{k \leq x}\left(\begin{array}{l}
+n \\
+k
+\end{array}\right) p^k \cdot q^{n-k} \quad(x \geq 0)
+$$
+(fuer $x<0$ ist $F(x)=0$ ). $n$ und $p$ sind dabei die Parameter der Verteilung. Die Kennwerte oder Masszahlen der Binomialverteilung lauten:
+\begin{itemize}
+    \item Mittelwert: $\mu=n p$
+    \item Varianz: $\quad \sigma^2=n p q=n p(1-p)$
+    \item Standardabweichung: $\sigma=\sqrt{n p q}=\sqrt{n p(1-p)}$
+\end{itemize}
+Dabei bedeuten:
+\begin{itemize}
+    \item p: Konstante Wahrscheinlichkeit für das Eintreten des Ereignisses A beim Einzelversuch $(0<p<1)$
+    \item $q$ : Konstante Wahrscheinlichkeit für das Eintreten des zu A komplementären Ereignisses $\bar{A}$ beim Einzelversuch $(q=1-p)$
+    \item $n$ : Anzahl der Ausführungen des Bernoulli-Experiments (Umfang des mehrstufigen Bernoulli-Experiments)
+\end{itemize}

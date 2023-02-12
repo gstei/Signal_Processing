@@ -1,0 +1,48 @@
+% \begin{figure}
+% \begin{tikzpicture}[
+%         line width=1pt, &gt;=latex, scale=0.8,
+%         sb/.style={text width=1.5cm, align=center,inner sep=0pt}]
+\documentclass[tikz,14pt,border=10pt,subpreambles=true]{standalone}
+\newcommand{\DSB}[1]{ 
+  \def\xa{3} \def\ya{0}
+    \def\xb{1} \def\yb{2}
+    \def\xc{0} \def\yc{1.7}
+    \def\tang{.4}
+    %   
+    \def\curve{
+            (#1-\xa,\ya) .. controls ++ (2*\tang,0) and ++ (-\tang,0) ..
+            (#1-\xb,\yb) .. controls ++ (.5*\tang,0) and ++ (-\tang,0) ..
+            (#1,\yc) .. controls ++ (\tang,0) and ++ (-.5*\tang,0) ..
+            (#1+\xb,\yb) .. controls ++ (\tang,0) and ++ (-2*\tang,0) ..
+            (#1+\xa,\ya)
+            }
+    \path[fill=violet!40] (#1-\xa,0) -- \curve -- (#1+\xa,0) -- cycle;
+    \draw  \curve;
+    }
+\begin{document}
+\begin{tikzpicture}[line width=1pt, >=latex, scale=0.8, sb/.style={text width=1.5cm, align=center,inner sep=0pt}]
+    \DSB{0} 
+    \draw   (-10,0) -- (10,0) node [below left] {$f \longrightarrow$}
+            (0,0) node[below] {0} --++ (0,3) node [below right] {$M(f)$};
+    \path   (-3,0) node[below] {$-B$} -- (3,0) node[below] {$B$};
+    \node[left] at (10,.5) {(a) Baseband};
+    
+    \begin{scope}[yshift=-5cm]
+        \def\xs{5}
+        \DSB{-\xs} \DSB{\xs}
+            
+        \draw   (-10,0) -- (10,0) node [below left] {$f \longrightarrow$}
+                (0,0) node[below] {0} --++ (0,3)
+                (-\xs,0) node[below] {$-f_C$} --++ (0,2.5)
+                (\xs,0) node[below] {$f_C$} --++ (0,2.5);
+        \node[left] at (10,.5) {(b) DSB};
+        
+        \draw[stealth-] (-\xs-1.5,1.5) to [bend right] ++ (-1,.5) node[left,sb] {Upper sideband};
+        \draw[stealth-] (-\xs+1.5,1.5) to [bend left] ++ (1,.5) node[right,sb] {Lower sideband};
+        
+        \draw[stealth-] (\xs-1.5,1.5) to [bend right] ++ (-1,.5) node[left,sb] {Lower sideband};
+        \draw[stealth-] (\xs+1.5,1.5) to [bend left] ++ (1,.5) node[right,sb] {Upper sideband};
+    \end{scope} 
+                
+    \end{tikzpicture}
+\end{document}

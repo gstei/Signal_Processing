@@ -1,0 +1,52 @@
+%https://tex.stackexchange.com/questions/627211/plot-constellation
+\documentclass[tikz,14pt,border=10pt,subpreambles=true]{standalone}
+
+
+
+\usetikzlibrary{arrows.meta,
+                chains,
+                positioning,
+                quotes}
+\usepackage[skip=1ex]{subcaption}
+
+\begin{document}
+
+\tikzset{
+    arr/.style = {-Straight Barb},
+    dot/.style = {circle, fill, inner sep=2pt, outer sep=0pt,
+                  node contents={} },
+  every label/.style = {label distance=4pt,
+                        font=\footnotesize, fill=white, inner sep=1.5pt},
+every picture/.style = {scale=1.2}
+        }
+        
+        
+    
+\begin{tikzpicture}
+% axis
+\draw[arr]  (-40mm,0) -- (40mm,0) node[right] {$\Re$};
+\draw[arr]  (0,-50mm) -- (0,40mm) node[above] {$\Im$};
+% circle
+\draw   (0,0) circle[radius=14.1mm];
+\draw   (0,0) circle[radius=31.6mm];
+\draw [gray] (-35mm,10mm) -- (35mm,10mm) node[right] {$A$};
+\draw [gray] (-35mm,-10mm) -- (35mm,-10mm) node[right] {$-A$};
+\draw [gray] (-10mm,-35mm) -- (-10mm,35mm) node[above] {$-A$};
+\draw [gray] (10mm,-35mm) -- (10mm,35mm) node[above] {$A$};
+\draw [gray] (-30mm,-30mm) -- (-30mm,30mm) node[above] {$-3A$};
+\draw [gray] (30mm,-30mm) -- (30mm,30mm) node[above] {$3A$};
+
+% \node at (15:10mm) [dot, label=45:{1}];
+\filldraw[black] (10mm,10mm) circle (2pt);
+\filldraw[black] (-10mm,10mm) circle (2pt);
+\filldraw[black] (10mm,-10mm) circle (2pt);
+\filldraw[black] (-30mm,-10mm) circle (2pt);
+\filldraw[black] (30mm,10mm) circle (2pt);
+\filldraw[black] (-30mm,10mm) circle (2pt);
+\filldraw[black] (30mm,-10mm) circle (2pt);
+\filldraw[black] (-10mm,-10mm) circle (2pt);
+
+\end{tikzpicture}
+
+ 
+\end{document}

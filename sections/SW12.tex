@@ -1,0 +1,21 @@
+\section{Receiver}
+Designing sharp filters for high frequencies in CMOS technology, which is often used, is quite difficult. Due to that one came up with different receiver technologies to be able to implement those filters at lower frequencies. To do that one ore more local oscillators are needed which consume quite a lot of energy. Therefore nowadays, one tries to prevent having local oscillators when possible. Nevertheless, it was often used and is still used in some applications. Therefore one has a look at them in this chapter.
+\subsection{Conversion to baseband}
+Problem is that when signal is not symmetric it is not working. A solution would be to multiplie it with a complex signal.
+\begin{equation}
+\underline{\mathrm{x}}(\mathrm{t})=\mathrm{e}^{-\mathrm{j} \omega \mathrm{ct}}=\cos \left(\omega_{\mathrm{c}} \mathrm{t}\right)-\mathrm{j} \cdot \sin \left(\omega_{\mathrm{c}} \mathrm{t}\right)=\cos \left(\omega_{\mathrm{c}} \mathrm{t}\right)+\mathrm{j} \cdot \cos \left(\omega_{\mathrm{c}} \mathrm{t}-90^{\circ}\right)
+\end{equation}
+This is the idea of the zero-if approach. The issue is when one has a little phase shift then one gets some image. One issue of this approach is the dc offset.
+When something is near the antenna the antenna has a different impedance. From the mixer some signal goes to the antenna with the $\omega_{LO}$ frequency. When the antenna is not matched the signal comes back the amount of the signal that comes back is dependent on the environment. Today one solves this problem by leaving always the carrier in the middle at the frequency of zero.
+\subsection{Low-IF receiver}
+\subsection{Hartley-Architecture}
+It is difficult to have a 90 degree phase shift for a whole frequency band.
+The image rejection ratio can be callculated with \autoref{eq:image_rejection_ratio} where the variables mean the following:\newline
+$\delta G=a m p l i t u d e ~ e r r o r$\newline
+$\delta \varphi=$ phase error\newline
+\begin{equation}\label{eq:image_rejection_ratio}
+I R R=\sqrt{\sin ^2\left(\frac{\delta \varphi}{2}\right)+\left(\frac{\delta G}{2 G}\right)^2 \cdot \cos ^2\left(\frac{\delta \varphi}{2}\right)}
+\end{equation}
+
+\subsubsection{Dual-IF Receiver with image rejection}
+

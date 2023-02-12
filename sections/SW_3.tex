@@ -1,0 +1,426 @@
+\section{Optimum linear filters}
+\subsection{Wiener Filtering}
+A Wiener filter minimizes the mean-square error to a minimum.
+\begin{figure}[ht]
+  \centering
+  \resizebox{1\textwidth}{!}{\subimport{images/}{wiener3.tex}}
+  %\includestandalone[width=1\linewidth]{wiener3.tex} % without the `.tex` extension
+  \caption{Wiener filter=FIR filter!}
+  \label{fig:wiener_3}
+\end{figure}
+\begin{figure}[ht]
+  \centering
+  \resizebox{1\textwidth}{!}{\subimport{images/}{wiener4.tex}}
+  %\includestandalone[width=1\linewidth]{wiener4.tex} % without the `.tex` extension
+  \caption{Wiener filter overview}
+  \label{fig:wiener_2}
+\end{figure}
+The output of the filter in the diagram above can be described as the following:
+$$
+    \hat{s}[n+D]=\sum_{i=0}^{M} \textcolor{orange}{w}_{i} \cdot \textcolor{blue}{y}[n-i]
+$$
+\begin{itemize}
+    \item $\textcolor{orange}{\boldsymbol{w}}$ is called the weighting or coefficient vector $\boldsymbol{\textcolor{orange}{w}} \triangleq\left[\textcolor{orange}{w}_1, \textcolor{orange}{w}_2, \ldots, \textcolor{orange}{w}_N\right]^T$
+    \item $\boldsymbol{\textcolor{violet}{s}}$ is the input signal vector $\boldsymbol{\textcolor{violet}{s}} \triangleq\left[\textcolor{violet}{s}_1, \textcolor{violet}{s}_2, \ldots, \textcolor{violet}{s}_k\right]^T$
+    \item $\boldsymbol{\textcolor{violet}{\hat{s}}}$ is the output signal
+    \item $\textcolor{blue}{y}[n]$ is the received signal
+    \item $\boldsymbol{\textcolor{pink}{x}}$ is the input signal plus the channel behaviour
+\end{itemize}
+% One can rewrite this with a matrix $\boldsymbol{\textcolor{orange}{w}}^T$ $\boldsymbol{\textcolor{blue}{y}}[n]$:
+Let's assume one has a filter with three filter coefficients $\textcolor{orange}{w}_0,\textcolor{orange}{w}_1,\textcolor{orange}{w}_2$. The output can then be written in the following form:
+$$
+\begin{aligned}
+& \textcolor{violet}{\hat{s}}[0]=w_0 \textcolor{blue}{y}[0] \\
+& \textcolor{violet}{\hat{s}}[1]=w_0 \textcolor{blue}{y}[1]+w_1 \textcolor{blue}{y}[0] \\
+& \textcolor{violet}{\hat{s}}[2]=w_0 \textcolor{blue}{y}[2]+w_1 \textcolor{blue}{y}[1]+w_2 \textcolor{blue}{y}[0] \\
+& \textcolor{violet}{\hat{s}}[3]=w_0 \textcolor{blue}{y}[3]+w_1 \textcolor{blue}{y}[2]+w_2 \textcolor{blue}{y}[1]
+\end{aligned}
+$$
+Where $\boldsymbol{\textcolor{violet}{\hat{s}}}[k]$ can also be written as $\boldsymbol{A}[k] \boldsymbol{\textcolor{orange}{w}}$ where $\boldsymbol{A}[k]$ is the following:
+$$
+\boldsymbol{A}[k]=\left(\begin{array}{ccc}
+\textcolor{blue}{y}[0] & 0 & 0 \\
+\textcolor{blue}{y}[1] & \textcolor{blue}{y}[0] & 0 \\
+\textcolor{blue}{y}[2] & \textcolor{blue}{y}[1] & \textcolor{blue}{y}[0] \\
+\vdots & \vdots & \vdots \\
+\textcolor{blue}{y}[k] & \textcolor{blue}{y}[k-1] & \textcolor{blue}{y}[k-2]
+\end{array}\right)
+$$
+and $\boldsymbol{\textcolor{orange}{w}} \triangleq\left[\textcolor{orange}{w}_1, \textcolor{orange}{w}_2, \ldots, \textcolor{orange}{w}_N\right]^T$ the error can then be written as:
+$$
+e[k]=\boldsymbol{\textcolor{violet}{s}}[k]-\boldsymbol{\textcolor{blue}{y}}[k]=\boldsymbol{\textcolor{violet}{s}}[k]-\boldsymbol{A}[k] \boldsymbol{\textcolor{orange}{w}}[k]
+$$
+The error is minimized when the following condition is given:
+$$
+\boldsymbol{\textcolor{orange}{w}}[k]=\left(\boldsymbol{A}^T[k] \boldsymbol{A}[k]\right)^{-1} \boldsymbol{A}^T[k] \boldsymbol{\textcolor{violet}{s}}[k]
+$$
+% $$
+%     \hat{s}[n]=\underbrace{\boldsymbol{w}^T}_{\text{row vector}} \cdot \overbrace{\textcolor{blue}{\boldsymbol{y}}[n]}^{\text{column vector}}
+% $$
+% where $\boldsymbol{w} \triangleq\left[w_1, w_2, \ldots, w_N\right]^T$ and $\textcolor{blue}{\boldsymbol{y}}[n] \triangleq[\textcolor{blue}{y}[n], \textcolor{blue}{y}[k-1], \ldots, \textcolor{blue}{y}[k-N+1]]^T$
+% The error is then described with \autoref{eq:error}
+% \begin{equation} \label{eq:error}
+%     e[n]=\textcolor{violet}{\hat{s}}[n]-\textcolor{blue}{y}[n]=d[n]-\boldsymbol{w}^T \textcolor{blue}{\boldsymbol{y}}[n]
+% \end{equation}
+% But we are interested in the square error:
+% $$
+% \begin{aligned}
+%     e^2[n] &=\left(d[n]-\boldsymbol{w}^T \textcolor{blue}{\boldsymbol{y}}[n]\right) \cdot\left(d[n]-\textcolor{blue}{\boldsymbol{y}}^T[n] \boldsymbol{w}\right) \\
+%     &=d^2[n]+\boldsymbol{w}^T \textcolor{blue}{\boldsymbol{y}}[n] \textcolor{blue}{\boldsymbol{y}}^T[n] \boldsymbol{w}-2 d[n] \textcolor{blue}{\boldsymbol{y}}^T[n] \boldsymbol{w}
+% \end{aligned}
+% $$
+% Note that $\textcolor{blue}{\boldsymbol{y}}^T[n] \boldsymbol{w}=\boldsymbol{w}^T \textcolor{blue}{\boldsymbol{y}}[n]$, since both are column vectors with the same size.
+% To proceed further one must know that the follogin for the derivatives of vectors applies:
+% $$
+% \begin{aligned}
+% \nabla \boldsymbol{v}\left\{\boldsymbol{u}^T \boldsymbol{v}\right\} &=\nabla \boldsymbol{v}\left\{\boldsymbol{v}^T \boldsymbol{u}\right\}=\boldsymbol{u} \\
+% \nabla \boldsymbol{u}\left\{\boldsymbol{u}^T \boldsymbol{u}\right\} &=2 \boldsymbol{u} \\
+% \nabla \boldsymbol{v}\left\{\boldsymbol{v}^T \boldsymbol{A}\right\} &=\boldsymbol{A} \\
+% \nabla \boldsymbol{v}\left\{\boldsymbol{v}^T \boldsymbol{A} \boldsymbol{v}\right\} &=\boldsymbol{A} \boldsymbol{v}+\boldsymbol{A}^T \boldsymbol{v}
+% \end{aligned}
+% $$
+% For symetric matrices the following applies:
+% $$
+% \nabla\boldsymbol{v}\left\{\boldsymbol{v}^T \boldsymbol{R} \boldsymbol{v}\right\}=2 \boldsymbol{R} \boldsymbol{v}
+% $$
+% And for transformation the following applies:
+% $$
+% (\boldsymbol{A} \boldsymbol{B})^T=(\boldsymbol{B})^T(\boldsymbol{A})^T
+% $$
+% $$
+% (\boldsymbol{A}^T)^T=A
+% $$
+% With this we can write the estimation $E$ of the error with the following formula:
+% $$
+% E\left\{e^2[n]\right\}=E\left\{d^2[n]\right\}+\boldsymbol{w}^T E\left\{\textcolor{blue}{\boldsymbol{y}}[n] \textcolor{blue}{\boldsymbol{y}}^T[n]\right\} \boldsymbol{w}-2 E\left\{d[n] \textcolor{blue}{\boldsymbol{y}}^T[n]\right\} \boldsymbol{w}
+% $$
+% $$
+% E\left\{e^2[n]\right\}=E\left\{d^2[n]\right\}+\boldsymbol{w}^T \boldsymbol{R} \boldsymbol{w}-2 \boldsymbol{p}^T \boldsymbol{w}
+% $$
+% The minimization of the mean-squared error according can be achieved by setting the differentiation
+% of this quadratic equation with respect to the coefficient vector w equal to zero,
+% $$
+% \nabla_{\boldsymbol{w}}\left\{E\left\{e^2[n]\right\}\right\}=2 \boldsymbol{R} \boldsymbol{w}-2 \boldsymbol{p}
+% $$
+% When setting this equation now to zero, we get the following equation
+% $$
+% 2 \boldsymbol{R} \boldsymbol{w}=2 \boldsymbol{p}
+% $$
+% and the result of this equation is:
+When rewriting this we end up with the following equation:
+$$
+\boldsymbol{w}_{\mathrm{MMSE}}=\boldsymbol{R}^{-1} \boldsymbol{p}
+$$
+which is also called the $\textbf{wiener-hopf equation}$. Also note that $\mathbf{R}$ is the autocorrelation with the input signal
+$$
+\mathbf{R}_{\textcolor{blue}{y y}}=\left(\begin{array}{cccc}
+\gamma_{\textcolor{blue}{y y}}[0] & \gamma_{\textcolor{blue}{y y}}[-1] & \cdots & \gamma_{\textcolor{blue}{y y}}[-M] \\
+\gamma_{\textcolor{blue}{y y}}[1] & \gamma_{\textcolor{blue}{y y}}[0] & \cdots & \gamma_{\textcolor{blue}{y y}}[1-M] \\
+\vdots & \vdots & & \vdots \\
+\gamma_{\textcolor{blue}{y y}}[M] & \gamma_{\textcolor{blue}{y y}}[M-1] & \cdots & \gamma_{\textcolor{blue}{y y}}[0]
+\end{array}\right)
+$$
+and $\boldsymbol{p}$ or also $\mathbf{r}_{\textcolor{violet}{s} \textcolor{blue}{y}}$ the cross-correlation of the input and the chennel output.
+$$
+\mathbf{r}_{\textcolor{violet}{s} \textcolor{blue}{y}}=\left(\begin{array}{c}
+\gamma_{\textcolor{violet}{s} \textcolor{blue}{y}}[D] \\
+\gamma_{\textcolor{violet}{s} \textcolor{blue}{y}}[D+1] \\
+\vdots \\
+\gamma_{\textcolor{violet}{s} \textcolor{blue}{y}}[D+M]
+\end{array}\right)
+$$
+\subsubsection{Exercise Wiener filter without white noise}
+\begin{figure}[ht]
+  \centering
+  %\includestandalone[width=1\linewidth]{wiener_exercise.tikz} % without the `.tex` extension
+  \resizebox{1\textwidth}{!}{\subimport{images/}{wiener_exercise.tex}}
+  \caption{Wiener filter example}
+  \label{fig:wiener_1}
+\end{figure}
+\paragraph{What is $h[n]$ of the first part in \autoref{fig:wiener_1}?}\mbox{}\newline
+\autoref{fig:wiener_1} shows that the first part is an IIR Filter with $h[n]=\alpha^n \cdot \epsilon[n]$
+\paragraph{Lets assume $\alpha$ is -0.5. How does $H[z]$ and it's inverse look like?}
+We know the following:\newline
+\begin{minipage}{\textwidth}
+\begin{align*}
+h\tikzmark{xx}(n)&= \alpha^n\cdot\tikzmark{yy}\epsilon[n] \\[2em]
+X(z) &= \frac{z}{z-a}
+\end{align*}
+
+\begin{tikzpicture}[overlay,remember picture, > = {Circle[open,blue]}]
+  \draw [<->] ([yshift=-.7ex]pic cs:xx) -- ++(0,-2.2em);
+  \draw [<->] ([yshift=-.7ex]pic cs:yy) -- ++(0,-2.2em);
+\end{tikzpicture}
+\end{minipage}
+Therefore $X(z)=\frac{1}{1-\alpha \cdot z^{-1} }$ and $X(z)^{-1}=1-\alpha \cdot z^{-1}$\newline
+\begin{minipage}{\textwidth}
+\begin{align*}
+X\tikzmark{x}(z)^{-1}&= 1-\alpha\cdot\tikzmark{y}z^{-1} \\[2em]
+h^{-1}[n] &= 1\cdot\delta[n]-\alpha\cdot \delta[n-1]
+\end{align*}
+
+\begin{tikzpicture}[overlay,remember picture, > = {Circle[open,blue]}]
+  \draw [<->] ([yshift=-.7ex]pic cs:x) -- ++(0,-2.2em);
+  \draw [<->] ([yshift=-.7ex]pic cs:y) -- ++(0,-2.2em);
+\end{tikzpicture}
+\end{minipage}
+With this information we know that the inverse of $h[n]$ is an FIR filter with the impule response of $1\cdot\delta[n]+0.5\cdot \delta[n-1]$. $w_0$ should therefore be one and $w_1$ 0.5 when one assumes that $s[n]$ is white noise and $n[n]$ is zero.
+\paragraph{What do we get when we use the wiener filter?}
+$$
+\begin{aligned}
+\gamma_{ss}[0]&=1+\frac{1}{4}+\frac{1}{16}+\frac{1}{64}... = (\frac{1}{4})^k=\frac{1}{1-(\frac{1}{4})}=\frac{4}{3}=1.33=\sigma_x^2\\
+\gamma_{ss}[1]&=\gamma_{ss}[0] \cdot (-\frac{1}{2})=-\frac{2}{3}=-0.666\\
+\gamma_{ss}[2]&=\gamma_{ss}[1] \cdot (-\frac{1}{2})=\frac{1}{3}=0.333
+\end{aligned}
+$$
+$$
+\gamma_{\textcolor{blue}{y y}}[m]=\gamma_{s s}[m]+\gamma_{n n}[m]= \begin{cases}\sigma_s^2+\sigma_n^2 & \text { if } m=0 \\ -\frac{2}{3} & \text { if } |m| =1 \\ \frac{1}{3} & \text { if }  |m| =2 \end{cases}
+$$
+$$
+\textbf{R}_{yy}=\begin{bmatrix}
+\frac{4}{3} & -\frac{2}{3} & \frac{1}{3}\\
+-\frac{2}{3} & \frac{4}{3} & -\frac{2}{3}\\
+\frac{1}{3} & -\frac{2}{3} & \frac{4}{3}
+\end{bmatrix}
+$$
+Since we know the following: $x[n]=a\cdot x[n-1]+s[n] \Rightarrow s[n]=x[n]-a\cdot x[n-1]$ we can calculate $r_{sy}$ with 
+$$
+\begin{aligned}
+\textbf{r}_{sy}&=\begin{bmatrix}
+E \left(s[n] \cdot y[n]\right)\\
+E \left(s[n] \cdot y[n-1]\right)\\
+E \left(s[n] \cdot y[n-2]\right)
+\end{bmatrix}\\
+&=
+\begin{bmatrix}
+E \left(\left(x[n]-a\cdot x[n-1]\right) \cdot y[n]\right)\\
+E \left(\left(x[n]-a\cdot x[n-1]\right) \cdot y[n-1]\right)\\
+E \left(\left(x[n]-a\cdot x[n-1]\right) \cdot y[n-2]\right)
+\end{bmatrix}\\
+&=
+\begin{bmatrix}
+E \left( \left(x[n]-a\cdot x[n-1]\right) \cdot \left( x[n]+ v[n] \right) \right)\\
+E \left(\left(x[n]-a\cdot x[n-1]\right) \cdot \left(x[n-1]+ v[n-1]\right)\right)\\
+E \left(\left(x[n]-a\cdot x[n-1]\right) \cdot \left(x[n-2]+ v[n-2]\right)\right)
+\end{bmatrix}\\
+&= 
+\begin{bmatrix}
+E \left(x[n]\cdot x[n]+x[n]\cdot v[n]+x[n]\cdot (-a)\cdot x[n-1]+v[n]\cdot (-a\cdot x[n-1])\right)\\
+E \left(x[n]\cdot x[n-1]+x[n]\cdot v[n]+x[n-1]\cdot (-a)\cdot x[n-1]+v[n]\cdot (-a\cdot x[n-1])\right)\\
+E \left(x[n]\cdot x[n-2]+x[n]\cdot v[n]+x[n-2]\cdot (-a)\cdot x[n-1]+v[n]\cdot (-a\cdot x[n-1])\right)
+\end{bmatrix}\\
+&= 
+\begin{bmatrix}
+	E \left(\frac{4}{3}^2+0+-a\cdot a\cdot \frac{4}{3}^2 +0\right)\\
+	E \left(a\cdot \frac{4}{3}^2-a\cdot \frac{4}{3}^2\right)\\
+	E \left(a^2\cdot \frac{4}{3}^2-a^2\cdot \frac{4}{3}^2\right)
+\end{bmatrix}\\
+&= 
+\begin{bmatrix}
+	1\\
+	0\\
+	0
+\end{bmatrix}
+\end{aligned}
+$$
+
+
+$$
+\boldsymbol{R}_{yy}^{-1} \boldsymbol{r}_{sy}=
+\begin{bmatrix}
+1\\
+0.5\\
+0
+\end{bmatrix}
+$$
+\subsubsection{Exercise Wiener filter with white noise}
+Lets assume we have again a system as one can see in \autoref{fig:wiener_1} where $s[k]$ and $n[k]$ are white gaussian with zero mean. Furthermore they are uncorrelated $E\{s[k]n[k]=0\}$. Lets also assume that:
+$$
+E\left\{x^2[k]\right\}=\sigma_x^2 \quad \text { and } \quad E\left\{n^2[k]\right\}=\sigma_n^2
+$$
+What is 
+$$
+E\left\{y^2[k]\right\}, E\{y[k] y[k-1]\}, E\{x[k] y[k]\}, E\{x[k] y[k-1]\}
+$$
+Since $E\left\{x^2[k]\right\}$ and $E\left\{n^2[k]\right\}$ are given 
+$$
+E\left\{y^2[k]\right\}=E\left\{x^2[k]\right\}+2 \underbrace{E\{x[k] n[k]\}}_{=0}+E\left\{n^2[k]\right\}=\underline{\sigma_x^2+\sigma_n^2}
+$$
+and
+$$
+\begin{aligned}
+E\{y[k] y[k-1]\} & =E\{x[k] x[k-1]\}+\underbrace{E\{x[k] n[k-1]\}}_{=0}+\underbrace{E\{x[k-1] n[k]\}}_{=0}+\underbrace{E\{n[k] n[k-1]\}}_{=0} \\
+& =E\{x[k] x[k-1]\}=\underline{a \sigma_x^2}
+\end{aligned}
+$$
+and 
+$$
+E\{x[k] y[k]\}=E\left\{x^2[k]\right\}+\underbrace{E\{x[k] n[k]\}}_{=0}=\underline{\sigma_x^2}
+$$
+and 
+$$
+E\{x[k] y[k-1]\}=E\{x[k] x[k-1]\}+\underbrace{E\{x[k] n[k-1]\}}_0=\underline{a \sigma_x^2}
+$$
+Therefore 
+$$
+\begin{aligned}
+\left(\begin{array}{cc}
+E\left\{y^2[k]\right\} & E\{y[k] y[k-1]\} \\
+E\{y[k] y[k-1]\} & E\left\{y^2[k]\right\}
+\end{array}\right)\left(\begin{array}{l}
+w_0 \\
+w_1
+\end{array}\right) & =\left(\begin{array}{c}
+E\{x[k] y[k]\} \\
+E\{x[k] y[k-1]\}
+\end{array}\right) \\
+\left(\begin{array}{cc}
+\sigma_x^2+\sigma_n^2 & a \sigma_x^2 \\
+a \sigma_x^2 & \sigma_x^2+\sigma_n^2
+\end{array}\right)\left(\begin{array}{l}
+w_0 \\
+w_1
+\end{array}\right) & =\left(\begin{array}{c}
+\sigma_x^2 \\
+a \sigma_x^2
+\end{array}\right) \\
+\left(\begin{array}{cc}
+1+\frac{\sigma_n^2}{\sigma_x^2} & a \\
+a & 1+\frac{\sigma_n^2}{\sigma^2}
+\end{array}\right)\left(\begin{array}{l}
+w_0 \\
+w_1
+\end{array}\right) & =\left(\begin{array}{c}
+1 \\
+a
+\end{array}\right)\\
+\left(\begin{array}{l}
+w_0 \\
+w_1
+\end{array}\right)&=\left(\begin{array}{c}
+1 \\
+a
+\end{array}\right) \\
+\left(\begin{array}{l}
+w_0 \\
+w_1
+\end{array}\right)&=\frac{1}{\left(1+\frac{\sigma_n^2}{\sigma_x^2}\right)^2-a^2}\left(\begin{array}{cc}
+1+\frac{\sigma_n^2}{\sigma_x^2} & -a \\
+-a & 1+\frac{\sigma_n^2}{\sigma_x^2}
+\end{array}\right)\left(\begin{array}{l}
+1 \\
+a
+\end{array}\right) \\
+& =\frac{1}{\left(1+\frac{\sigma_n^2}{\sigma_x^2}\right)^2-a^2}\left(\begin{array}{c}
+1+\frac{\sigma_n^2}{\sigma_x^2}-a^2 \\
+-a+a\left(1+\frac{\sigma_n^2}{\sigma_x^2}\right)
+\end{array}\right) \\
+\end{aligned}
+$$
+
+
+
+
+
+
+\section{Adaptive filters}
+Adaptive filters are divided in the following applications:
+\begin{itemize}
+    \item System identification
+    \item Inverse modelling
+    \item Linear prediction
+    \item Noise cancellation
+\end{itemize}
+\subsection{LMS-Based Adaptive Filters}
+LMS-Based adaptive filters are based on wiener filters (linear prediction). But instead of calculating the coefficients $\textbf{w}$ directly, it calculates them interactively. 
+\begin{equation}
+\boldsymbol{w}[k+1]=\boldsymbol{w}[k]+\mu \cdot e[k] \cdot \boldsymbol{x}^*[k]
+\end{equation}
+\begin{lstlisting}[language=Matlab]
+lms_filter(0.1,2,[1,1,1,1,1,1,1],[1,1,1,1,1,1,1])
+function [e,w]=lms_filter(mu,M,x,d)
+    % [e,w]=lms_filter(mu,M,x,d)
+    % Inputs:
+    % mu = step size, dim 1x1
+    % M = number of filter coefficients, dim 1x1
+    % x = input signal, dim Nx1
+    % d = desired signal, dim Nx1
+    %
+    % Outputs:
+    % e = estimation error, dim Nx1
+    % w = final filter coefficients, dim Mx1
+    e = zeros(size(x)); %preallocate
+    w = zeros(M,1); %preallocate
+    x = x(:); d = d(:); %ensure column vectors
+    for k=M:length(x)
+        xvec = x(k:-1:k-M+1);
+        e(k) = d(k)-w'*xvec; %compute error
+        w = w + mu*e(k)*xvec; %LMS update
+    end
+end
+\end{lstlisting}
+\begin{enumerate}
+    \item 
+$xvec=
+\begin{bmatrix}
+1\\
+1
+\end{bmatrix}
+$, 
+$e=
+\begin{bmatrix}
+0&1&0&0&0&0&0
+\end{bmatrix}
+$ and 
+$w=
+\begin{bmatrix}
+0.1\\
+0.1
+\end{bmatrix}
+$
+    \item 
+$xvec=
+\begin{bmatrix}
+1\\
+1
+\end{bmatrix}
+$, 
+$e=
+\begin{bmatrix}
+0&1&0.8&0&0&0&0
+\end{bmatrix}
+$ and 
+$w=
+\begin{bmatrix}
+0.18\\
+0.18
+\end{bmatrix}
+$
+    \item 
+$xvec=
+\begin{bmatrix}
+1\\
+1
+\end{bmatrix}
+$, 
+$e=
+\begin{bmatrix}
+0&1&0.8&0.64&0&0&0
+\end{bmatrix}
+$ and 
+$w=
+\begin{bmatrix}
+0.244\\
+0.244
+\end{bmatrix}
+$\newline
+and finally it would come up with the solution of $w_0=0.5, w_1=0.5$, when the input vectors are long enough.
+
+\end{enumerate}
+
+
+\subsection{RLS-Based Adaptive Filters}
+Converges faster than lms algorithm.
+\begin{equation}
+\boldsymbol{w}_{\mathrm{RLS}, k}=\boldsymbol{w}_{\mathrm{RLS}, k-1}+\frac{\mathcal{R}_{k-1}^{-1} \textcolor{blue}{\boldsymbol{y}}[k]}{\boldsymbol{x}^T[k] \mathcal{R}_{k-1}^{-1} \textcolor{blue}{\boldsymbol{y}}[k]+1}\left(d[k]-\boldsymbol{x}^T[k] \boldsymbol{w}_{\mathrm{RLS}, k-1}\right)
+\end{equation}

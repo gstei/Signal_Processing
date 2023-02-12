@@ -1,0 +1,89 @@
+% \href{https://tikz.net/gauss2ians/}{\begin{tikzpicture}
+\documentclass[tikz,14pt,border=10pt,subpreambles=false]{standalone}
+\usepackage{amsmath} % for \dfrac
+\tikzset{>=latex} % for LaTeX arrow head
+\usepackage{pgfplots} % for the axis environment
+% \usepackage{xcolor}
+\usepackage[outline]{contour} % halo around text
+\contourlength{1.2pt}
+\usetikzlibrary{positioning,calc}
+\usetikzlibrary{backgrounds}% required for 'inner frame sep'
+%\usepackage{adjustbox} % add whitespace (trim)
+% define gauss2ian pdf and cdf
+\pgfmathdeclarefunction{gauss2}{3}{%
+  \pgfmathparse{1/(#3*sqrt(2*pi))*exp(-((#1-#2)^2)/(2*#3^2))}%
+}
+\pgfmathdeclarefunction{cdf}{3}{%
+  \pgfmathparse{1/(1+exp(-0.07056*((#1-#2)/#3)^3 - 1.5976*(#1-#2)/#3))}%
+}
+\pgfmathdeclarefunction{fq}{3}{%
+  \pgfmathparse{1/(sqrt(2*pi*#1))*exp(-(sqrt(#1)-#2/#3)^2/2)}%
+}
+\pgfmathdeclarefunction{fq0}{1}{%
+  \pgfmathparse{1/(sqrt(2*pi*#1))*exp(-#1/2))}%
+}
+\colorlet{mydarkblue}{blue!30!black}
+% to fill an area under function
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{patterns}
+\pgfplotsset{compat=1.12} % TikZ coordinates &lt;-&gt; axes coordinates
+% https://tex.stackexchange.com/questions/240642/add-vertical-line-of-equation-x-2-and-shade-a-region-in-graph-by-pgfplots
+% plot aspect ratio
+%\def\axisdefaultwidth{8cm}
+%\def\axisdefaultheight{6cm}
+% number of sample points
+\def\N{50}
+\begin{document}
+\begin{tikzpicture}
+\message{Normal distributions, different mu^^J}
+  
+  \def\q{0};
+  \def\B{-1.7};
+  \def\S{2.3};
+  \def\Bs{1};
+  \def\Ss{1.0};
+  \def\xmax{\S+3.2*\Ss};
+  \def\ymin{{-0.15*gauss2(\B,\B,\Bs)}};
+  
+  \begin{axis}[every axis plot post/.append style={
+               mark=none,domain={-1*(\xmax)}:{1.08*\xmax},samples=\N,smooth},
+               xmin={-1*(\xmax)}, xmax=\xmax,
+               ymin=\ymin, ymax={1.1*gauss2(\B,\B,\Bs)},
+               axis lines=middle,
+               axis line style=thick,
+               enlargelimits=upper, % extend the axes a bit to the right and top
+               ticks=none,
+               xlabel=$x$,
+               x label/.style={at={(current axis.right of origin)},anchor=north west},
+               width=0.7*\textwidth, height=0.5*\textwidth,
+               clip=false, % prevent labels falling off
+               y=200pt
+              ]
+    
+    % PLOTS
+    \addplot[blue, name path=B,thick] {0.2*gauss2(x,\B,\Bs)};
+    \addplot[red,  name path=S,thick] {0.8*gauss2(x,\S,\Ss)};
+    \addplot[black,dashed,thick]
+      coordinates {(\B, {1.02*gauss2(\B,\B,\Bs)}) (\B,{-0.05*gauss2(\B,\B,\Bs)})}
+      node[below=-4pt] {\strut$0$};
+    \addplot[black,dashed,thick]
+      coordinates {(\S, {1.02*gauss2(\S,\S,\Ss)}) (\S,{-0.05*gauss2(\S,\S,\Ss)})}
+      node[below=-4pt] {\strut$1$};
+    \addplot[black,dashed,thick]
+      coordinates {(\q, {0.50*gauss2(\B,\B,\Bs)}) (\q,{-0.05*gauss2(\B,\B,\Bs)})}
+      node[below=-4pt] {\strut$x_\text{cut}$};
+    
+    % FILL
+    \path[name path=xaxis]
+      (0,0) -- (\pgfkeysvalueof{/pgfplots/xmax},0); %\pgfkeysvalueof{/pgfplots/xmin}
+    \addplot[white!50!blue] fill between[of=xaxis and B, soft clip={domain=0:\xmax}];
+    %\addplot[white!50!red]  fill between[of=xaxis and S, soft clip={domain=-1*\xmax:0}];
+    
+    % LABELS
+    \node[above=2pt,black!20!blue] at (   \B,  {gauss2(\B,\B,\Bs)}) {$p(x \mid -1)$};
+    \node[above=2pt,black!20!red]  at (1.05*\S,{gauss2(\S,\S,\Ss)}) {$p(x \mid 1)$};
+    \node[right,black!20!blue,scale=1.3] at ({0.1*\q},{gauss2(1.5*\q,\B,\Bs)}) {\strut$\alpha$};
+    
+  \end{axis}
+\end{tikzpicture}
+\end{document}

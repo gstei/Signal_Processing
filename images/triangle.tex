@@ -1,0 +1,25 @@
+\documentclass[margin=3mm]{standalone} 
+\usepackage{tkz-euclide}
+\usepackage{siunitx}
+\begin{document}
+\begin{tikzpicture}[
+  my angle/.style={
+    every pic quotes/.append style={text=cyan},
+    draw=cyan
+      }]
+    \tkzDefPoint(0,0){C}  \tkzLabelPoint[below left](C){C}
+    \tkzDefPoint(7.5,0){B}  \tkzLabelPoint[below right](B){B}
+    \tkzDefPoint(3.33,3.72){A}  \tkzLabelPoint[above](A){A}
+   
+    \tkzDrawSegments(A,B B,C C,A)
+    
+    
+    \pic [my angle, "$x^{\circ}$",angle radius=1.1cm] {angle=B--C--A};
+    \pic [my angle, "$90^{\circ}$",angle radius=1cm] {angle=C--A--B};
+    \pic [my angle, "$y^{\circ}$",angle radius=1.1cm] {angle=A--B--C};
+    
+    \draw (C) -- node[midway,above,sloped] {\SI{0.5}{\lambda}}(A);
+    \draw (C) -- node[midway,above,sloped] {\SI{0.75}{\lambda}}(B);
+   
+\end{tikzpicture}
+\end{document}

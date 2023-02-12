@@ -1,0 +1,322 @@
+\section{OFDM}
+OFDM has the benefit that frequency-selective fading is no problem and no spectrum is wasted for guard bands. Nevertheless, guard intervals are inserted to prevent ICI(inter channel interference) The following \href{https://youtu.be/i3LBGw8Yle4}{video} might be helpful.
+The equalizer is in the frequency domain, and therefore it is much easier.\newline
+The total excess delay is the total difference from the first and last signal received through the channel due to reflection. The mean delay of a received signal can be calculated according to \autoref{eq:mean_delay}, where $P_T$ is the power of the transmitted signal and can be calculated according to \autoref{eq:signal_power}. The delay spread can be calculated according to \autoref{eq:rms_delay_spread} and is dependent on \autoref{eq:signal_power} and \autoref{eq:mean_delay}. The delay spread has quite an important role in OFDM, since it defines the guard intervals.
+\begin{equation}\label{eq:mean_delay}
+\tau_0=\frac{1}{P_T} \sum_k P_k \tau_k
+\end{equation}
+\begin{equation}\label{eq:rms_delay_spread}
+\begin{aligned}
+\tau_{\mathrm{RMS}} =\sqrt{\frac{1}{P_T} \sum_k P_k\left(\tau_k-\tau_0\right)^2}
+\end{aligned}
+\end{equation}
+\begin{equation}\label{eq:signal_power}
+P_T =\sum_k P_k
+\end{equation}
+\subsubsection{Exercise Channel Impulse response and Coherence time/bandwidth}
+\begin{enumerate}
+    \item \textbf{What is the mean delay of a channel with the impulse response of $h(t)=\delta(t)+0.5 \delta\left(t-T_1\right)$ and $T_1=1\mu s$?}
+    $$
+    \tau_0=\frac{1}{1.25}\left(1^2\cdot \SI{0}{\micro\second}+0.5^2 \cdot \SI{1}{\micro\second}\right)=0.2 \mu \mathrm{s}
+    $$
+    \item \textbf{What is the spread of the signal mentioned above?}
+    $$
+    \tau_{\mathrm{RMS}}=\sqrt{\frac{1}{1.25}\left(1^2\cdot(0-0.2)^2+0.5^2 \cdot(1-0.2)^2\right)}=0.4 \mu \mathrm{s}
+    $$
+    \item \textbf{How does the impulse response look like?}\newline
+    (two Dirac pulses, one delayed by T1 and attenuated to half the first one)
+    \item \textbf{How would a possible environment look like?} \newline
+    \SI{1}{\micro\second} corresponds to around \SI{300}{\meter}, There fore one has a direct path and a object that has a distanc that the signal must travel 300m more than in the direct path.
+    \item \textbf{How would the frequency response look like obtained in the Fourier domain?}
+    $$
+    H(f)=1+0.5 \exp \left(-j 2 \pi f T_1\right)
+    $$
+    \item\textbf{ Draw the spectrum:}
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=13cm]{images/amplitude_spectrum_5.tex}
+        \caption{Amplitude Spectrum}
+        \label{fig:amp_spec_5}
+    \end{figure}
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=13cm]{images/amplitude_spectrum_6.tex}
+        \caption{Amplitude Spectrum}
+        \label{fig:amp_spec_5}
+    \end{figure}
+    \FloatBarrier
+    \item \textbf{Estimate the coherence bandwidth of this channel from the graph sketched} \newline
+    Less than 100kHz (smallest bandwidth where the signal changes by 3dB)
+    \item \textbf{Compute the coherence bandwidth of this channel and compare it with your estimated value:}\newline
+    Depending on the definition we either have
+    $$
+    B_{\mathrm{coh}}=\frac{1}{2 \pi \tau_{\mathrm{RMS}}}=\frac{1}{2 \pi \cdot 0.4 \mu \mathrm{s}}=398 \mathrm{kHz}
+    $$
+    or, if the correlation function (among the impulse response at the different frequency positions) is to be $>0.9$
+    $$
+    B_{\mathrm{coh}}=\frac{1}{50 \tau_{\mathrm{RMS}}}=\frac{1}{50 \cdot 0.4 \mu \mathrm{s}}=50 \mathrm{kHz}
+    $$
+    \item \textbf{What is the coherence time of this channel?} \newline
+    $\infty$, since nothing is moving, environment does not change.
+    
+\end{enumerate}
+\subsubsection{Exercise Coherence time/Coherence Bandwidth}
+Given is a wirless system with the following parameters:
+\begin{itemize}
+    \item Bandwidth w: 20MHz
+    \item $f_{RF}$ = \SI{5}{\giga\hertz}
+    \item Subcarrier spacing $\Delta f$ = \SI{312.5}{\kilo\hertz}
+    \item Symbol time = \SI{3.2}{\micro\second}
+    \item Guard interval = \SI{0.8}{\micro\second}
+\end{itemize}
+\begin{enumerate}
+    \item \textbf{Is the coherence time of the channel long enough?} \newline
+    From \autoref{eq:ofdm_rule_of_thumb4} and \autoref{eq:doppler_spread} one knows that $T_{\mathrm{coh}} \approx \frac{9}{16 \pi f_d}=\frac{9}{16 \pi \frac{v}{\SI{3e8}{\meter\per\second}}\cdot f_{RF}} \Rightarrow v=\frac{9}{16\cdot \pi \cdot T_{\mathrm{coh}}}\cdot \frac{\SI{3e8}{\meter\per\second}}{f_{RF}}=\frac{9}{16\cdot \pi \cdot \SI{3.2}{\micro\second}}\cdot \frac{\SI{3e8}{\meter\per\second}}{\SI{2.4}{\giga\hertz}}=\SI{3.36e3}{\meter\per\second}$, since $T_{\mathrm{coh}} \gg \frac{N_c}{W}=\frac{1}{\Delta f}=\SI{3.2}{\micro\second}$. Therefore it is long enough (speeds in a room that are larger than \SI{3.36e3}{\meter\per\second} is not common)
+    \item \textbf{Is the coherence bandwidth of the channel wide enough?}\newline
+    From \autoref{eq:ofdm_rule_of_thumb1} one knows that $B_{\mathrm{coh}} \approx \frac{1}{50 \tau_{\mathrm{RMS}}}$. Furthermore $\tau_{\mathrm{RMS}}=\frac{x_{\mathrm{RMS}}}{c_0}$ (the delay spread is the length spread of the different paths divided by the speed of light). With \autoref{eq:N_C_selection} one can write $B_{\mathrm{coh}} \approx \frac{1}{50 \tau_{\mathrm{RMS}}} \gg \frac{W}{N_C}=\frac{1}{\Delta f}=\SI{312.5}{\kilo\hertz} \Rightarrow \frac{c_0}{50 x_{\mathrm{RMS}}} \gg  = \SI{312.5}{\kilo\hertz} \Rightarrow \frac{\SI{3e8}{\meter\per\second}}{\SI{312.5}{\kilo\hertz} \cdot 50} \gg x_{\mathrm{RMS}} \Rightarrow \SI{19.2}{\meter} \gg x_{\mathrm{RMS}}$ which is plausible for a normal room.
+\end{enumerate}
+
+\begin{equation}\label{eq:ofdm_coherence}
+T_{\text {coh }} \propto \frac{1}{f_d}
+\end{equation}
+\begin{equation}
+B_{\mathrm{coh}} \propto \frac{1}{\tau_{\text {RMS }}}
+\end{equation}
+\begin{itemize}
+    \item $B_{coh}$ (Coherence bandwidth) = bandwidth over which the channel can be considered constant. Note: $T_{coh}$ is completely independent of $B_{coh}$
+    \item $T_{coh}$ (Coherence time) = time over which the channel can be considered constant. Has to do with the motion dynamics.
+    \item $f_d$=Doppler spread (when we head to the transmission station with our phone, we get a doppler effect, $f_{RF}$ (center frequency) gets higher, doppler spread is normally in the range of Hz (a few hertz)), see also \autoref{eq:doppler_spread}
+    \begin{equation}\label{eq:doppler_spread}
+        f_d=\frac{V}{C_0}\cdot f_{RF}\cdot cos(\alpha)
+    \end{equation}
+    \item $B$=Bandwidth
+    \item $T$=symbol time
+    \item $N_c$ = Number of subcarriers
+    \item $\Delta f$ = subcarrier spacing
+\end{itemize}
+
+
+
+$$
+\begin{array}{lll}
+\hline \text { fading type } & \text { condition } & \begin{array}{l}
+\text { alternative formulation } \\
+\text { of condition }
+\end{array} \\
+\hline \text { flat fading } & B_{\mathrm{coh}} \gg B & \tau \ll T \\
+\text { frequency-selective fading } & B_{\mathrm{coh}}<B & \tau>T \\
+\hline \text { slow fading } & T_{\mathrm{coh}} \gg T & f_d \ll B \\
+\text { fast fading } & T_{\mathrm{coh}}<T & f_d>B \\
+\hline
+\end{array}
+$$
+
+
+
+The formula below is in our signal
+\begin{equation}
+B \propto \frac{1}{T}
+\end{equation}
+It's important to have the following in mind: When one has a small bandwidth the signal gets long (for a sharp impulse one needs a huge bandwidth (UWB)). One now has to find a number of sub carriers $N_c$ that make the bandwidth not to small ($N_c$ not to large) $\Rightarrow$, otherwise the time gets to long (problems with moving objects) and do not make them to wide ($N_c$ not to small)$\Rightarrow$, otherwise frequency fading could cause issues. The behaviour can be described with \autoref{eq:N_C_selection}.
+\begin{equation}\label{eq:N_C_selection}
+\frac{W}{B_{\mathrm{coh}}} \ll N_c \ll W \cdot T_{\mathrm{coh}}
+\end{equation}
+Furthermore one must be aware of the following Rule of Thumbs: \autoref{eq:ofdm_rule_of_thumb1} can be used if the frequency correlation function is above 0.9.
+\begin{equation}\label{eq:ofdm_rule_of_thumb1}
+B_{\mathrm{coh}} \approx \frac{1}{50 \tau_{\mathrm{RMS}}}
+\end{equation}
+
+\autoref{eq:ofdm_rule_of_thumb2} can be used if the frequency correlation function is above 0.5.
+\begin{equation}\label{eq:ofdm_rule_of_thumb2}
+B_{\mathrm{coh}} \approx \frac{1}{5 \tau_{\mathrm{RMS}}}
+\end{equation}
+
+\autoref{eq:ofdm_rule_of_thumb3} is sometimes also used (leading to yet another value for the correlation function).
+\begin{equation}\label{eq:ofdm_rule_of_thumb3}
+B_{\mathrm{coh}} \approx \frac{1}{2 \pi \tau_{\mathrm{RMS}}}
+\end{equation}
+
+Very similar rules can be found for the relationship given by \autoref{eq:ofdm_coherence}(for the time correlation to be above 0.5), see also \autoref{eq:doppler_spread} for the Doppler spread . 
+\begin{equation}\label{eq:ofdm_rule_of_thumb4}
+T_{\mathrm{coh}} \approx \frac{9}{16 \pi f_d}
+\end{equation}
+With those equations one could make the following statement for coherence times of about 0.5.
+$$
+W \cdot 5\cdot \tau_{\mathrm{RMS}}  \ll N_c \ll \frac{W \cdot 9}{16 \cdot \pi \cdot \frac{v}{\SI{3e8}{\meter\per\second}}\cdot f_{RF}}
+$$
+\paragraph{Exercise: For 802.11a (WLAN), we have W = 20MHz and Nc = 64. What is the subcarrier distance? How large should $B_{coh}$ and $T_{coh}$ of the channel be at least?}\mbox{}\newline
+The subcarrier distance is:
+$$
+\frac{W}{N_c}=\frac{20 \mathrm{MHz}}{64}=312.5 \mathrm{kHz}
+$$
+$$
+\begin{aligned}
+&B_{\mathrm{coh}} \gg \frac{W}{N_c}=312.5 \mathrm{kHz}, \quad \text { e.g., } 3.125 \mathrm{MHz} \\
+&T_{\mathrm{coh}} \gg \frac{1}{312.5 \mathrm{kHz}}=3.2 \mu \mathrm{s}, \quad \text { e.g., } 32 \mu \mathrm{s}
+\end{aligned}
+$$
+
+FFT is a circular and not a linear convolution.
+$$
+\begin{aligned}
+\frac{9}{16 \pi f_d}=T_{c o h} & \gg \frac{N_c}{W}=\frac{1}{\Delta f}=\frac{1}{312.5 k \mathrm{kz}}=3.2 \mu \mathrm{s} \\
+f d & \ll \frac{9}{16 \pi \cdot 3.2 \mu s} \\
+v &<\frac{9}{16 \pi \cdot 3.2 \mu \mathrm{s}} \cdot \frac{C_0}{f \mathrm{RF}}=3.6 \cdot 10^3 \mathrm{~m} / \mathrm{s}
+\end{aligned}
+$$
+
+In OFDM we have a lot of sub carriers, and all sub carriers are orthogonal.
+\subsection{Water filling}
+\begin{itemize}
+    \item $N_c$ =Number of sub carriers
+    \item $W$ = Total bandwidth available
+    \item $S$ = Total signal power
+    \item $S_n$ = Received power in the n'th channel
+    \item $C$ = Shannon Capacity
+    \item $\eta$ = noise power density
+    \item $H_n$ = Transfer function of a single sub carrier
+\end{itemize}
+Shannon's channel capacity:
+\begin{equation}\label{eq:shannon_capacity}
+C=W \log _2\left(1+\frac{S}{N}\right)=W \log _2\left(1+\frac{S}{\eta W}\right)
+\end{equation}
+In a multicarrier system:
+$$
+C=\sum_{n=1}^{N_c} \frac{W}{N_c} \log _2\left(1+\frac{S_n}{\eta W / N_c}\right)
+$$
+Power Received:
+\begin{equation}\label{eq:attenuation_of_subcarrier}
+S_n=\underbrace{P_n}_{\text{power allocated in the n'th subcarrier}} \cdot\left|H_n\right|^2
+\end{equation}
+\begin{equation}\label{eq:waterfilling_beta}
+\beta=\frac{P+\eta W / N_c \sum_{n=1}^{N_c} \frac{1}{\left|H_n\right|^2}}{N_c}
+\end{equation}
+\begin{equation}\label{eq:waterfilling_beta2}
+P_n=\beta-\frac{\eta W / N_c}{\left|H_n\right|^2}, \quad n=1 \ldots N_c
+\end{equation}
+\paragraph{Example: Imagine a two-carrier system with total power P = $P_1$ + $P_2$. If the two channel coefficients $H_1$ and $H_2$ are given, derive the choice of $P_1$ and $P_2$ that optimize the use of the channels.}
+With \autoref{eq:shannon_capacity} and \autoref{eq:attenuation_of_subcarrier} one can create the following equation system:
+$$
+C=\frac{W}{2} \log _2\left(1+\frac{P_1 \cdot\left|H_1\right|^2}{\eta W / 2}\right)+\frac{W}{2} \log _2\left(1+\frac{P_2 \cdot\left|H_2\right|^2}{\eta W / 2}\right)
+$$
+Since we want to have it's maximum, one has to derive it and then set it to zero.\newline
+With some magic we end then with the following:
+$$
+P_1=\frac{\eta W}{4} \cdot \frac{\left|H_1\right|^2-\left|H_2\right|^2}{\left|H_1\right|^2\left|H_2\right|^2}+\frac{P}{2}
+$$
+When $P_1$ is negative, we do not assign any energy to it.
+\paragraph{The DAB system (digital audio broadcast) facilitates different OFDM Transmission modes to allow for some
+flexibility with respect to environment and change of environment (due to vehicle movement). Assume a total
+bandwidth of W = 1.536 MHz.}
+\textbf{Complete the following table:}
+$$
+\begin{array}{lcccr}
+\hline \text { Transm. mode } & \text { No. of subcarriers } & \text { Subcarrier spacing } & \text { Symbol time }{ } T_S & \text { Guard time } \\
+\hline \text { TM I } & 1536 & 1 \mathrm{kHz} & 1.246 \mathrm{~ms} & 246 \mu \mathrm{s} \\
+\text { TM IV } & 768 & 2 \mathrm{kHz} & 623 \mu \mathrm{s} & 123 \mu \mathrm{s} \\
+\text { TM II } & 384 & 4 \mathrm{kHz} & 312 \mu \mathrm{s} & 62 \mu \mathrm{s} \\
+\text { TM III } & 192 & 8 \mathrm{kHz} & 156 \mu \mathrm{s} & 31 \mu \mathrm{s} \\
+\hline
+\end{array}
+$$
+\textbf{What efficiency (with respect to the guard time 'wasted') does the OFDM system have?}
+$$
+\eta=\frac{1.246-0.246}{1.246}=80 \%
+$$
+\textbf{State the numerical condition for the coherence bandwidth for TM I}
+According to \autoref{eq:N_C_selection}:
+$$
+B_{\mathrm{coh}} \gg \frac{1.5 \mathrm{MHz}}{1536} \approx 1 \mathrm{kHz}
+$$
+\textbf{With the rule of thumb that the delay spread and the coherence bandwidth are related through state the condition for the delay spread for TM I.}
+$$
+\tau_{\mathrm{RMS}}=\frac{1}{2 \pi B_{\mathrm{coh}}}
+$$
+one gets:
+$$
+\tau_{\mathrm{RMS}} \ll 160 \mu \mathrm{s}
+$$
+\textbf{State the numerical condition for the coherence time for TM I.}
+According to \autoref{eq:N_C_selection}:
+$$
+T_{\text {coh }} \gg \frac{1536}{1.5 \mathrm{MHz}} \approx 1 \mathrm{~ms}
+$$
+\textbf{With the rule of thumb that (for a correlation coefficient of 0.5) the coherence time is in relation with the Doppler frequency shift is as in the euqation below. Compute the coherence time for a vehicle speed of 120 km/h and an RF of 1.5 GHz (L-band as used in DAB).}
+$$
+T_{\mathrm{coh}} \approx \frac{9}{16 \pi f_D}
+$$
+The Doppler frequency can be calculated according to \autoref{eq:doppler}
+\begin{equation}\label{eq:doppler}
+f_D=\frac{v}{c} \cdot f_{\mathrm{RF}}
+\end{equation}
+$$
+T_{\mathrm{coh}} \approx \frac{9}{16 \pi \frac{v}{c} \cdot f_{\mathrm{RF}}}=1.1 \mathrm{~ms}
+$$
+\paragraph{Is the coherence-time condition satisfied sufficiently for TM I?}.
+TM I is suitable for large delays but slow vehicle speed. TM III is better suited to high-speed, but allows
+only moderate delay spreads.
+\subsection{peak-to-average-power Problem (PAPR)} 
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=13cm]{images/papr.tex}
+    \caption{Different Subcarriers}
+    \label{fig:papr}
+\end{figure}
+As one can see in \autoref{fig:papr} the average energy ($P_{avg}$) of the sub carriers is $N_c \cdot \underbrace{x_n^2}_{P_{sub}}$. But the peak energy $P_{Peak}$ is $(N_c \cdot x_n)^2$, which is much higer. Therefore it is possible that one has some very high peaks in an OFDM system.
+\subsubsection{Example PAPR}
+\paragraph{Imagine an OFDM system with 8 subcarriers of BPSK modulated signals, each with power Psub. The absolute
+highest peak possible for such a signal can therefore be 8 times the value of one isolated subcarrier.}
+\begin{enumerate}
+    \item \textbf{Compute the average power, the peak power and thus the peak-to-average-power value.}
+    $$
+\begin{aligned}
+P_{\mathrm{avg}} &=N P_{\mathrm{sub}}=8 P_{\mathrm{sub}} \\
+P_{\text {peak }} &=N^2 P_{\mathrm{sub}}=64 P_{\text {sub }} \\
+\mathrm{PAPR} &=\frac{P_{\text {peak }}}{P_{\mathrm{avg}}}=8
+\end{aligned}
+$$
+    \item \textbf{If we have one redundant channel, i.e., we can choose the eighth channel to reduce the amplitude of the
+composite signal, what reduction in the peak-to-average-power value would we get?}\newline
+The idea is to sent a minus one when all other channels send a one and vice versa, therefore the max amplitude reduces to $6\cdot x_{max}$
+$$
+\begin{aligned}
+P_{\mathrm{avg}} &=8 P_{\mathrm{sub}} \\
+P_{\text {peak }} &=36 P_{\text {sub }} \\
+\text { PAPR } &=\frac{P_{\text {peak }}}{P_{\text {avg }}}=4.5
+\end{aligned}
+$$
+\item \textbf{Very often, not the highest peak is considered, but the percentage that a certain amplitude is exceeded.
+Compute for the original 8-subcarrier OFDM system, the probability that the signal exceeds 3 times the
+amplitude of a single subcarrier.}\newline
+On the TI-Nspire you find the binomial coefficient under menu$\rightarrow$5:Probability $\rightarrow$3: Combinations $\Rightarrow$ nCr\newline
+Furthermore one knows from \autoref{eq:binomial_function} that the following holds: 
+$$
+    f(x)=P(X=x)=\left(\begin{array}{c}
+    n \\
+    x
+    \end{array}\right) p^x \cdot q^{n-x} \quad(x=0,1,2, \ldots, n)
+$$
+Therefore
+$$
+P(X\leq6)=\underbrace{2}_{\text{since all negative is also a soluiton}} \cdot\sum_{k=6}^8\left(\begin{array}{l}
+8 \\
+k
+\end{array}\right)\left(\frac{1}{2}\right)^8\cdot\left(\frac{1}{2}\right)^{8-k}=2 \frac{1}{256}(1+8+28)=\frac{74}{256}=29 \%
+$$
+since the amplitude is larger than 3 when 6,7 or 8 subcarriers show a one (when only 5 subcarriers show a one one has 5-3=2, which is less than one).
+$$
+p=2 \sum_{k=0}^2\left(\frac{1}{2}\right)^8\left(\begin{array}{l}
+8 \\
+k
+\end{array}\right)=2 \frac{1}{256}(1+8+28)=\frac{74}{256}=29 \%
+$$
+\item \textbf{Compute for the OFDM system with one subcarrier chosen such as to lower the amplitude, the probability
+that the signal exceeds 3 times the amplitude of a single subcarrier.}
+$$
+p=2 \sum_{k=0}^1\left(\frac{1}{2}\right)^7\left(\begin{array}{l}
+7 \\
+k
+\end{array}\right)=2 \frac{1}{128}(1+7)=\frac{16}{128}=12.5 \%
+$$
+\end{enumerate}
+\subsection{Diversity}

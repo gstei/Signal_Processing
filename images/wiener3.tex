@@ -1,0 +1,83 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Welcome to Overleaf --- just edit your LaTeX on the left,
+% and we'll compile it for you on the right. If you open the
+% 'Share' menu, you can invite other users to edit at the same
+% time. See www.overleaf.com/learn for more info. Enjoy!
+%
+% Note: you can export the pdf to see the result at full
+% resolution.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Title: Block diagram of Third order noise shaper in Compact Disc Players
+% Author: Ramón Jaramillo
+\documentclass[tikz,subpreambles=true]{standalone}
+\usepackage{textcomp}
+\usetikzlibrary{shapes,arrows}
+\begin{document}
+% Definition of blocks:
+\tikzset{%
+  block/.style    = {draw, thick, rectangle, minimum height = 0em,
+    minimum width = 0em},
+  sum/.style      = {draw, circle, node distance = 2cm}, % Adder
+  input/.style    = {coordinate}, % Input
+  output/.style   = {coordinate}, % Output
+  ampl/.style = {regular polygon, regular polygon sides=3,
+              draw, fill=white, 
+              inner sep=0.5mm, outer sep=0mm,
+              shape border rotate=90},
+  bullet/.style={circle, fill, minimum size=2pt, inner sep=2pt, outer sep=0pt},
+  bullet2/.style={circle, fill, minimum size=2pt, inner sep=2pt, outer sep=0pt,fill=gray!50}
+}
+% Defining string as labels of certain blocks.
+\newcommand{\suma}{\Large$+$}
+\newcommand{\inte}{$\displaystyle \int$}
+\newcommand{\derv}{\huge$\frac{d}{dt}$}
+
+\begin{tikzpicture}[auto, thick, node distance=2cm, >=triangle 45]
+\draw
+	% Drawing the blocks of first filter :
+	node [input, bullet2, label=left:{$y[n]$}] (input1) {}
+    node [right of=input1,bullet] (point1) {}
+    node [right of=point1, block] (wiener_d1) {$z^{-1}$}
+    node [ampl, below of=point1,shape border rotate=180] (wiener_0) {\Large$w_0$}
+    node [ampl, below of=wiener_d1,right of=wiener_d1,shape border rotate=180] (wiener_1) {\Large$w_1$}
+    node [below of=wiener_1,sum] (suma1) {\suma}
+    
+    node [right of=wiener_1,above of=wiener_1, block] (wiener_d2) {$z^{-1}$}
+    node [ampl, below of=wiener_d2,right of=wiener_d2,shape border rotate=180] (wiener_2) {\Large$w_2$}
+    node [below of=wiener_2,sum] (suma2) {\suma}
+    node [right of=wiener_2,above of=wiener_2, block] (wiener_d3) {$z^{-1}$}
+    node [ampl, below of=wiener_d3,right of=wiener_d3,shape border rotate=180] (wiener_3) {\Large$w_3$}
+    node [below of=wiener_3,sum] (suma3) {\suma}
+    node [right of=suma3, bullet2, label=right:{$\hat{s}[n+D]$}] (output) {}
+    node [above of=wiener_1,bullet] (point2) {}
+    node [above of=wiener_2,bullet] (point3) {}
+     ;
+    % Joining blocks. 
+    % Commands \draw with options like [->] must be written individually
+	\draw[->](input1) -- node {}(wiener_d1);
+	\draw[->](wiener_d1) -| node {} (wiener_1);
+	\draw[->](point1) -| node {} (wiener_0);
+	\draw[->](point2) -- node {} (wiener_d2);
+	\draw[->](point3) -- node {} (wiener_d3);
+	\draw[->](wiener_0) |- node {} (suma1);
+	\draw[->](wiener_d2) -| node {} (wiener_2);
+	\draw[->](wiener_d3) -| node {} (wiener_3);
+	\draw[->](wiener_1) -- node {} (suma1);
+	\draw[->](wiener_2) -- node {} (suma2);
+	\draw[->](wiener_3) -- node {} (suma3);
+	
+	\draw[->](suma1) -- node {} (suma2);
+	\draw[->](suma2) -- node {} (suma3);
+	\draw[->](suma3) -- node {} (output);
+	% Adder
+
+	
+    % Boxing and labelling noise shapers
+	\draw [color=gray,thick](1,1) rectangle (15,-5);
+	\node at (1,-5) [below=5mm, right=0mm] {\textsc{wiener filter with M=4}};
+	
+\end{tikzpicture}
+\end{document}

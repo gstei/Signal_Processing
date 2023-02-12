@@ -1,0 +1,38 @@
+%https://tex.stackexchange.com/questions/627211/plot-constellation
+\documentclass[tikz,14pt,border=10pt,subpreambles=true]{standalone}
+
+
+
+\usetikzlibrary{arrows.meta,
+                chains,
+                positioning,
+                quotes}
+\usepackage[skip=1ex]{subcaption}
+
+\begin{document}
+
+\tikzset{
+    arr/.style = {-Straight Barb},
+    dot/.style = {circle, fill, inner sep=2pt, outer sep=0pt,
+                  node contents={} },
+  every label/.style = {label distance=4pt,
+                        font=\footnotesize, fill=white, inner sep=1.5pt},
+every picture/.style = {scale=1.2}
+        }
+        
+        
+    
+\begin{tikzpicture}
+% axis
+\draw[arr]  (-2.8,0) -- (2.8,0) node[right] {$\Re$};
+\draw[arr]  (0,-2.4) -- (0,2.4) node[above] {$\Im$};
+% circle
+\draw   (0,0) circle[radius=15mm];
+
+
+\node at (90:15mm) [dot, label=90:{2}];
+
+\end{tikzpicture}
+
+ 
+\end{document}

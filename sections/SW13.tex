@@ -1,0 +1,65 @@
+\section{Considerations for Bandpass Sampling Architectures}
+An analog bandpass signal x(t) can be fully reconstructed if it's sampled with a frequency of more than two times the bandwidth of x(t)
+
+Sampled signal
+$$
+\text { Sampled signal } \quad x_a(t)=x(t) \cdot \sum_{n=-\infty}^{\infty} \delta(t-n T)
+$$
+$$
+\text { Spectrum of the sampled signal } \quad X_a(f)=X(f) *\left[\frac{1}{T} \sum_{n=-\infty}^{\infty} \delta\left(f-\frac{n}{T}\right)\right]
+$$
+
+$$
+\begin{array}{rlrl} 
+& -f_u+k \cdot f_A<f_u & & \frac{2 \cdot f_u}{k}>f_A>\frac{2 \cdot f_O}{k+1} \\
+-f_o+(k+1) \cdot f_A>f_o & & \\
+& (k+1) \cdot f_u & >k \cdot f_o & 0 \leq k<\frac{f_u}{B} \\
+k \cdot f_u+f_u & >k \cdot f_o & & \\
+k \cdot\left(f_o-f_u\right) & =k \cdot B<f_u & &
+\end{array}
+$$
+The idea is to get a digital downconversion instead of a analog one, due to sampling theorem.
+The problem is that one has mirror from the left side, therefore it would be nice if one can remove it.
+Analytic signal has only positive frequency components, is not anymore a real time signal, since a real signal has always a positive and negative part.
+\section{Wave propagation}
+The frequency response of the channel is given by H(t).
+\begin{equation}
+\underline{H}(f, t)=\frac{\underline{Y}(f, t)}{\underline{X}(f, t)}
+\end{equation}
+Important wave progpagations modes
+\begin{itemize}
+    \item Ground wave propagation\newline
+    Wave is conducted by the earths surface (air and earth). The issue with this path is that one has losses (currents in the earth that have a resistance). The higher the frequency the larger the losses get.
+    \item Sky wave propagation, we have positively and negatively charger particles in the ionosphere which act as a conductor.
+    \item Line of sight (LOS)
+\end{itemize}
+\subsection{Exercise 13}
+\begin{itemize}
+    \item \textbf{Image Reject Mixers: Calculate the image rejection ratio at a given phase error of 3$^\circ$ and an amplitude error of 2 dB}\newline
+    According to \autoref{eq:image_rejection_ratio} the following holds:
+    $$
+    I R R^h=\sqrt{\sin ^2\left(\frac{\delta \varphi}{2}\right)+\left(\frac{\delta G}{2 G}\right)^2 \cdot \cos ^2\left(\frac{\delta \varphi}{2}\right)}
+    $$
+    where $\delta G$ = amplitude error and $\delta \varphi$ = phase error, therefore $\frac{\delta G}{G}=10^{\frac{2}{20}}-1$ = 0.259.
+     $$
+    I R R^h=\sqrt{\sin ^2\left(\frac{3^{\circ}}{2}\right)+\left(\frac{10^{\frac{2}{20}}-1}{2}\right)^2 \cdot \cos ^2\left(\frac{3^{\circ}}{2}\right)}=17.586dB
+    $$
+\end{itemize}
+
+
+
+%https://github.com/l3v5y/UW-Electronics-Lecture-Notes/blob/master/ES335%20-%20Communication%20Systems.tex
+% \begin{figure}[h]
+%     \begin{tikzpicture}
+%         \draw[->] (1,0) node [below]{$(f_0-f_m)$} -- (1,1) node [above left] {$(\frac{A_0m}{2})$};
+%         \draw[->] (7,0) node [below]{$(f_0+f_m)$} -- (7,1) node [above right] {$(\frac{A_0m}{2})$};
+%         \draw[->] (4,0) node [below]{$f_0$} -- (4,2) node [above right] {$A_0$};
+%         \draw[->] (0,0) -> (8,0) node [below right] {$f(\omega )$};
+%         \draw[<->] (1,0.5)--(4,0.5);
+%         \node[align=center, above] at (2.5,0.5) {$f_m(\omega_m)$};
+%         \node[align=center, above] at (5.5,0.5) {$f_m(\omega_m)$};
+%         \draw[<->] (7,0.5)--(4,0.5);
+%     \end{tikzpicture}
+%     \centering
+%     \caption{Spectrum of an AM signal, including sidebands}
+% \end{figure}

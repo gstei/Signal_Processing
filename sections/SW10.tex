@@ -1,0 +1,105 @@
+\section{Smart Antenna Systems}
+Smart is not the antenna itself, but the signal processing behind it. Smart antennas can be divided in switched beam antennas and adaptive array antenna. Typical applications are DOA(Direction of arrival) and beamforming.
+\subsection{Phased array}
+One has multiple antennas with different phases, therefore negative and positive interference happens, which leads to the fact that one only has radiation in a certain direction. SDMA (Space division multiple access). Adaptive beam former for SDMA are useful because one can suppress interferer, whereas with a switched arrays this is not possible, since the negative interference always happens at the same place/angle.
+\subsection{The phased array principle}
+In this principle we assume that the signals are emitted from several psitions $\overrightarrow{x_n}$ with the wave propagation constant $k=\frac{2\pi}{\lambda}$
+
+The phase shift at the location $\overrightarrow{y}$ can be calculated according to \autoref{eq:general_superimposed_signal}.
+\begin{equation}\label{eq:general_superimposed_signal}
+\Delta \varphi=-k\left|\overrightarrow{x_n}-\vec{y}\right|
+\end{equation}
+The superimposed (complex) signal $\underline{g}$ at point $\overrightarrow{y}$ can be calculated according to the following formulas:
+\begin{equation}\label{eq:superimposed_complex_signal}
+\underline{g}(\vec{y})=\sum_{n=0}^{N-1} \underline{w}_n \cdot g_n(\phi) \cdot \exp \left(-\mathrm{j} \cdot \mathrm{k}\left|\overrightarrow{x_n}-\vec{y}\right|\right)
+\end{equation}
+\begin{itemize}
+    \item $g_n(\phi)$ directivit of the $n_{th}$ source
+    \item $\overrightarrow{x_n}$ location of the $n_{th}$ source (transmitter)
+    \item $y$ location of the receiver
+    \item $\underline{w}_n$ complex amplitude of the $n_{th}$ source feed
+\end{itemize}
+Note that the exponential term is only the rotation of the signal.
+\subsubsection{Uniform linear array}
+From \autoref{eq:general_superimposed_signal} one has seen that the callculation for an array antenna can become quite difficult. But when the antennas are distributed in an equal distance d one gets \autoref{eq:superimposed_signal_equal_distribution}.
+\begin{equation}\label{eq:superimposed_signal_equal_distribution}
+\underline{g}(\phi)=\sum_{n=0}^{N-1} \underline{w}_n \cdot g_n(\phi) \cdot \exp (-\mathrm{j} \cdot \mathrm{k} \cdot n \cdot d \cdot \sin \phi)
+\end{equation}
+Which is just the discrete Fourier transform. n describes again the n'th antenna element and $\phi$ the angle (when one stands before the antenna $\phi$ is zero, when one stands next to the antenna array (left or right) the angle is 90 degree).
+\subsection{Broadside Array}
+In a broadside array, all currents are the same. According to geometric progression one can also write:
+\begin{equation}
+\begin{aligned}
+&\underline{g_g}(\phi)=\underline{w}_0 \cdot \frac{1-e^{-j N k d \sin \phi}}{1-e^{-j k d \sin \phi}} \\
+&\left|\underline{g_g}(\phi)\right|=\left|\underline{w}_0\right| \cdot \frac{\left|\sin \left[\frac{1}{2}(N k d \sin \phi)\right]\right|}{\left|\sin \left[\frac{1}{2}(k d \sin \phi)\right]\right|}
+\end{aligned}
+\end{equation}
+And below the trigonometric ratios
+\begin{equation}
+\begin{aligned}
+\sin (\theta) &=\frac{o p p}{h y p} \\
+\cos (\theta) &=\frac{a d j}{h y p} \\
+\tan (\theta) &=\frac{o p p}{a d j}
+\end{aligned}
+\end{equation}
+\begin{figure}[ht]
+  \centering
+  \resizebox{0.5\textwidth}{!}{\subimport{images/}{trigonometrie.tex}}
+  \caption{Trigonometry}
+  \label{fig:trig}
+\end{figure}
+Peaks occur when \autoref{eq:peaks} is fulfilled. $\Rightarrow \phi=0$. Furthermore the Bandwidth can be callculated according to \autoref{eq:Bandwidth}.
+\begin{equation}\label{eq:peaks}
+k \cdot d \cdot \sin \phi_p=0
+\end{equation}
+\begin{equation}\label{eq:Bandwidth}
+B=2 \cdot \phi_z=2 \sin ^{-1}\left(\frac{\lambda}{N \cdot d}\right) \approx \frac{2 \cdot \lambda}{L}
+\end{equation}
+\paragraph{Group Pattern}\mbox{}\\
+Draft the group pattern of 2 radiators having a distance of d=0.75$\lambda$. Determine the nulls.\newline
+
+Furthermore, note that the distance between two radiators must exceed 0.5 $\lambda$ otherwise problems occur.
+\begin{figure}[ht]
+  \centering
+  \resizebox{0.5\textwidth}{!}{\subimport{images/}{triangle.tex}}
+  \caption{Triangle}
+  \label{fig:triang}
+\end{figure}
+With \autoref{fig:triang} one can calculate the angle x which is $cos^{-1}(\frac{0.5}{0.75})=0.841=\underline{\underline{48.19^{\circ}}}$, the same would be true when one goes in the other direction $180^{\circ}-48.19^{\circ}=\underline{\underline{131.81^{\circ}}}$. Note: 0.5 was chosen since then one has negative interference.
+
+
+\paragraph{Directivity in patch antenna arrays}\mbox{}\\
+Explain why it is difficult to obtain a high directivity for large $\Phi$ (see presentation) for patch
+arrays. Suggest an alternative construction.\newline
+
+It is difficult, since the sine of $\frac{\pi}{2}$ is always zero. an alternative solution would be to rotate the whole antenna by 90 degree. Or to place them on a non-planar carrier.
+\paragraph{Directivity and grating lobes}\mbox{}\\
+Explain why the directivity usually decreases when grating lobes occur.
+
+Grating lobes mean that a substantial part of the energy is radiated in these directions. This energy of course is not available any more to be radiated in the main direction which defines the directivity of the antenna. Therefore, the directivity decreases
+\paragraph{Beamwitdh}
+Estimate the beamwidth (in degrees) of a 10 element broadside array at 5GHz if the antenna elements are considered as isotropic radiators fed with equal signals and the distances between the neighboured elements are 0.5$\lambda$ \newline
+According to \autoref{eq:Bandwidth} the beamwidth can be calculated as follows:
+
+$$
+2 \phi_z \approx 2 \cdot \sin ^{-1}\left(\frac{\lambda}{N d}\right) \approx \frac{2 \lambda}{L}
+$$
+Therefore
+$$
+\begin{aligned}
+&\lambda / \mathrm{d}=2 \\
+&\mathrm{~N}=10 \\
+&\Rightarrow 2 \Phi_{\mathrm{z}}=2 \sin ^{-1}(1 / 5) \approx 23^{\circ}
+\end{aligned}
+$$
+\subsubsection{Exercise Smart Antenna}
+\textbf{Consider two isotropic radiators located at a distance of d=0.55$\lambda$. Both radiators are driven by a sinusoidal carrier signal with equal amplitude. The phase of the signal feeding radiator 1 lags behind  the signal of radiator 2 by 60$^{\circ}$. Calculate the angle $\alpha$, at which there is a zero of the radiation.}
+$$
+\cos(\beta)\cdot d + \frac{1}{6}=0.5 \Rightarrow \beta = 52.7^{\circ} \Rightarrow \alpha=180^{\circ}-52.7^{\circ}=127.3^{\circ}
+$$
+\begin{figure}[ht!]
+  \centering
+  \resizebox{12cm}{!}{\subimport{images/}{smart_antenna}}
+  \caption{Resulting wave}
+  \label{fig:smart_antenna}
+\end{figure}

@@ -1,0 +1,70 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Welcome to Overleaf --- just edit your LaTeX on the left,
+% and we'll compile it for you on the right. If you open the
+% 'Share' menu, you can invite other users to edit at the same
+% time. See www.overleaf.com/learn for more info. Enjoy!
+%
+% Note: you can export the pdf to see the result at full
+% resolution.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Title: Block diagram of Third order noise shaper in Compact Disc Players
+% Author: Ramón Jaramillo
+\documentclass[tikz,14pt,border=10pt,subpreambles=true]{standalone}
+\usepackage{textcomp}
+\usetikzlibrary{shapes,arrows}
+\usepackage{amsmath,amssymb,tikz}
+\begin{document}
+% Definition of blocks:
+\tikzset{%
+  block/.style    = {draw, thick, rectangle, minimum height = 3em,
+    minimum width = 3em},
+  sum/.style      = {draw, circle, node distance = 2cm}, % Adder
+  input/.style    = {coordinate}, % Input
+  output/.style   = {coordinate}, % Output
+  amp/.style = {regular polygon, regular polygon sides=3,
+              draw, fill=white, 
+              inner sep=0.5mm, outer sep=0mm,
+              shape border rotate=90},
+  bullet/.style={circle, fill, minimum size=2pt, inner sep=2pt, outer sep=0pt},
+  bullet2/.style={circle, fill, minimum size=2pt, inner sep=2pt, outer sep=0pt,fill=gray!50}
+}
+% Defining string as labels of certain blocks.
+\newcommand{\suma}{\Large$+$}
+\newcommand{\inte}{$\displaystyle \int$}
+\newcommand{\derv}{\huge$\frac{d}{dt}$}
+
+\begin{tikzpicture}[auto, thick, node distance=2cm, >=triangle 45]
+\draw
+	% Drawing the blocks of first filter :
+	node [input, bullet2, label=left:{$x[k]$}] (input1) {}
+	node [amp, right of=input1,shape border rotate=-90] (b) {\Large$B$}
+
+	node [sum, right of=b] (suma1) {\suma}
+
+    node [block, right of=suma1] (delay) {$z^{-1}$}
+    node [amp, below of=delay] (gain) {\Large$A$}
+    node [right of=delay, label=above:{$x[k]$},bullet] (point1) {}
+    node [amp, right of=point1,shape border rotate=-90] (C) {\Large$C$}
+    node [right of=C,sum] (suma2) {\suma}
+    node [above of=suma2,bullet2,label=above:{$v[k]$}] (noise) {}
+    node [right of=suma2, bullet2, label=right:{$y[k]$}] (output) {}
+     ;
+    % Joining blocks. 
+    % Commands \draw with options like [->] must be written individually
+	\draw[->](input1) -- node {}(b);
+	\draw[->](b) -- node {}(suma1);
+	\draw[->](suma1) -- node {$x_{k+1}$} (delay);
+	\draw[->](suma2) -- node {} (output);
+	\draw[->](delay) -- node {} (C);
+	\draw[->](C) -- node {} (suma2);
+	\draw[->](noise) -- node {} (suma2);
+	\draw[->](point1) |- node[near end]{} (gain);
+	\draw[->](gain) -| node {} (suma1);
+	% Adder
+
+	
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,59 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Welcome to Overleaf --- just edit your LaTeX on the left,
+% and we'll compile it for you on the right. If you open the
+% 'Share' menu, you can invite other users to edit at the same
+% time. See www.overleaf.com/learn for more info. Enjoy!
+%
+% Note: you can export the pdf to see the result at full
+% resolution.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Title: Block diagram of Third order noise shaper in Compact Disc Players
+% Author: Ramón Jaramillo
+\documentclass[tikz,14pt,border=10pt,subpreambles=true]{standalone}
+\usepackage{textcomp}
+\usetikzlibrary{shapes,arrows}
+\begin{document}
+% Definition of blocks:
+\tikzset{%
+  block/.style    = {draw, thick, rectangle, minimum height = 3em,
+    minimum width = 3em},
+  sum/.style      = {draw, circle, node distance = 2cm}, % Adder
+  input/.style    = {coordinate}, % Input
+  output/.style   = {coordinate}, % Output
+  amp/.style = {regular polygon, regular polygon sides=3,
+              draw, fill=white, 
+              inner sep=0.5mm, outer sep=0mm,
+              shape border rotate=90},
+  bullet/.style={circle, fill, minimum size=2pt, inner sep=2pt, outer sep=0pt},
+  bullet2/.style={circle, fill, minimum size=2pt, inner sep=2pt, outer sep=0pt,fill=gray!50}
+}
+% Defining string as labels of certain blocks.
+\newcommand{\suma}{\Large$+$}
+\newcommand{\inte}{$\displaystyle \int$}
+\newcommand{\derv}{\huge$\frac{d}{dt}$}
+
+\begin{tikzpicture}[auto, thick, node distance=2cm, >=triangle 45]
+\draw
+	% Drawing the blocks of first filter :
+	node [input, bullet2, label=left:{$\textcolor{violet}{s}[n]$}] (input1) {}
+
+
+	node [sum, right of=input1] (suma1) {\suma}
+    node [above of=suma1,bullet2,label=above:{$n[n]$}] (noise) {}
+    node [right of=suma1, block,node distance = 3cm] (delay) {$\sum_{i=0}^{M} \textcolor{orange}{w}_{i} \cdot \textcolor{blue}{y}[n-i]$}
+
+    node [right of=delay, bullet2, label=right:{$\hat{s}[n+D]$},node distance = 3cm] (output) {}
+     ;
+    % Joining blocks. 
+    % Commands \draw with options like [->] must be written individually
+	\draw[->](input1) -- node {}(suma1);
+	\draw[->](suma1) -- node {$\textcolor{blue}{y}[n]$} (delay);
+	\draw[->](noise) -- node {} (suma1);
+	\draw[->](delay) -- node {} (output);
+	
+	
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,292 @@
+Why $\frac{1}{N-1}$ see the following \href{https://youtu.be/xJlwSkyeP0k}{video}
+
+\section{Most important Formulas}
+\setlength{\tabcolsep}{10pt} % Default value: 6pt
+\renewcommand{\arraystretch}{1.5} % Default value: 1
+\subsection{Imporant formulas}
+\begin{tabular}{lcc}
+Real-/Imaginary part: &$\operatorname{Re}\{x\}=x_{\mathrm{R}}=\frac{1}{2}\left[x+x^{*}\right]$ & $\operatorname{Im}\{x\}=x_{\mathrm{I}}=\frac{1}{2 j}\left[x-x^{*}\right]$\\
+even/odd part: &$x_{\mathrm{g}}(t)=\frac{1}{2}[x(t)+x(-t)] $&$x_{\mathrm{u}}(t)=\frac{1}{2}[x(t)-x(-t)]$\\
+conj. even/odd part: &$ \quad x_{\mathrm{g}^{*}}(t)=\frac{1}{2}\left[x(t)+x^{*}(-t)\right]$&$ x_{\mathrm{u}^{*}}(t)=\frac{1}{2}\left[x(t)-x^{*}(-t)\right]$
+\end{tabular}
+
+
+
+\subsection{Definition der Faltung}
+\begin{tabular}{lcc}
+ &aperiodisch&periodisch\\
+ diskret: &$\quad x[n] * y[n]=\sum_{i=-\infty}^{\infty} x[i] \cdot y[n-i]$ & $x[n] \circledast y[n]=\sum_{i=n_{0}}^{n_{0}+N_{\mathrm{p}}-1} x[i] \cdot y[n-i]$\\
+ kontinuierlich: & $\quad x(t) * y(t)=\int_{-\infty}^{\infty} x(\tau) \cdot y(t-\tau) d \tau$ & $x(t) \circledast y(t)=\int_{t_{0}}^{t_{0}+T_{\mathrm{p}}} x(\tau) \cdot y(t-\tau) d \tau$
+\end{tabular}
+
+
+\subsection{Defintion der Energie}
+\begin{tabular}{lc}
+diskret: &$\quad E_{x}^{(\mathrm{d})}=\sum_{k=-\infty}^{\infty}|x[k]|^{2}=T \int_{-1 / 2 T}^{1 / 2 T}|X(f)|^{2} d f=\frac{1}{2 \pi} \int_{-\pi}^{\pi}|X(\Omega)|^{2} d \Omega$\\
+kontinuierlich: &$\quad E_{x}^{(\mathrm{k})}=\int_{-\infty}^{\infty}|x(t)|^{2} d t=\int_{-\infty}^{\infty}|X(f)|^{2} d f=\frac{1}{2 \pi} \int_{-\infty}^{\infty}|X(j \omega)|^{2} d \omega=T \cdot E_{x}^{(\mathrm{d})}$\\
+\end{tabular}
+
+
+\subsection{Defintion der Leistung periodischer Signale}
+\begin{tabular}{lc}
+diskret: &$\quad P_{x}^{(\mathrm{d})}=\frac{1}{N_{\mathrm{p}}} \sum_{k=0}^{N_{\mathrm{p}}-1}|x[k]|^{2}=\sum_{n=0}^{N_{\mathrm{p}}-1}\left|X_{n}\right|^{2}=\frac{1}{N^{2}} \sum_{n=0}^{N_{\mathrm{p}}-1}|X[n]|^{2}$\\
+kontinuierlich: &$\quad P_{x}^{(\mathrm{k})}=\frac{1}{T_{\mathrm{p}}} \int_{-T_{\mathrm{p}} / 2}^{T_{\mathrm{p}} / 2}|x(t)|^{2} d t=\sum_{n=-\infty}^{\infty}\left|X_{n}\right|^{2}=P_{x}^{(\mathrm{d})}$\\
+\end{tabular}
+
+
+\subsection{Definition spezieller Signale}
+\begin{tabular}{lc}
+Impulskamm: &$\quad \mathrm{W}_{T}(t)=\sum_{n=-\infty}^{\infty} \delta(t-n T)=\frac{1}{|T|} \mathrm{W}\left(\frac{t}{T}\right)$\\
+periodische Impulsfolge: &$\mathrm{U}_{N}[k]=\sum_{n=-\infty}^{\infty} \delta[k-n N]$\\
+\end{tabular}
+
+
+\section{C.2 z-Transformation}
+
+\subsection{Definition}
+
+\begin{tabular}{|c|c|}
+\hline zweiseitig: & einseitig: \\
+\hline$X(z)=\sum_{k=-\infty}^{\infty} x[k] z^{-k}$ & $X(z)=\sum_{k=0}^{\infty} x[k] z^{-k}$ \\
+Konvergenzgebiet $\mathcal{K}: \quad a<|z|<b$ & Konvergenzgebiet $\mathcal{K}: \quad|z|>a$ \\
+\hline
+\end{tabular}
+
+\subsection{Inverse $z$-Transformation}
+\begin{tabular}{|c|}
+\hline 
+$
+\begin{aligned}
+& x[k]=\frac{1}{2 \pi j} \oint_{\mathcal{C}} X(z) z^{k-1} d z=\sum_{\alpha_{i} \in \mathcal{A}} \operatorname{Res}\left\{X(z) \cdot z^{k-1} ; \alpha_{i}\right\} \\
+& \mathcal{C}: \text { pos. orientierte Kurve in } \mathcal{K} . \quad \mathcal{A} \text { : Menge aller von } \mathcal{C} \text { umschlossenen Pole. }
+\end{aligned}
+$\\
+\hline 
+\end{tabular}
+
+\subsection{Eigenschaften und Rechenregeln}
+
+\begin{tabular}{|l|c|c|c|}
+\hline & Zeitbereich & Bildbereich & Konvergenz \\
+\hline \hline Linearität & $c_{1} x_{1}[k]+c_{2} x_{2}[k]$ & $c_{1} X_{1}(z)+c_{2} X_{2}(z)$ & $\mathcal{K}_{x_{1}} \cap \mathcal{K}_{x_{2}}$ \\
+\hline Faltung & $x[k] * y[k]$ & $X(z) \cdot Y(z)$ & $\mathcal{K}_{x} \cap \mathcal{K}_{y}$ \\
+\hline Verschiebung & $x\left[k-k_{0}\right]$ & $z^{-k_{0}} X(z)$ & $\mathcal{K}_{x}$ \\
+\hline Dämpfung & $a^{k} \cdot x[k]$ & $X\left(\frac{z}{a}\right)$ & $|a| \cdot \mathcal{K}_{x}$ \\
+\hline lineare Gewichtung & $k \cdot x[k]$ & $-z \cdot \frac{d}{d z} X(z)$ & $\mathcal{K}_{x}$ \\
+\hline konj. komplexes Signal & $x^{*}[k]$ & $X^{*}\left(z^{*}\right)$ & $\mathcal{K}_{x}$ \\
+\hline Zeitinversion & $x[-k]$ & $X\left(\frac{1}{z}\right)$ & $1 / \mathcal{K}_{x}$ \\
+\hline diskrete Ableitung & $x[k]-x[k-1]$ & $X(z) \cdot \frac{z-1}{z}$ & $\mathcal{K}_{x}$ \\
+\hline diskrete Integration & $\sum_{i=\infty}^{k} x[i]$ & $X(z) \cdot \frac{z}{z-1}$ & $\mathcal{K}_{x} \cap\{|z|>1\}$ \\
+\hline periodische Fortsetzung & $\sum_{i=0}^{\infty} x\left[k-i N_{\mathrm{p}}\right]$ & $X(z) \cdot \frac{1}{1-z^{-N_{\mathrm{p}}}}$ & $\mathcal{K}_{x} \cap\{|z|>1\}$ \\
+\hline Upsampling & $x\left[\frac{k}{N}\right]$ & $X\left(z^{N}\right)$ & $\sqrt[N]{\mathcal{K}}_{x}$ \\
+\hline
+\end{tabular}
+
+\subsection{Spezielle Eigenschaften der einseitigen $z$-Transformation}
+
+
+
+$$
+\begin{array}{|l|c|c|}
+\hline \text { Verschiebung links} & x\left[k+k_{0}\right], k_{0}>0 & z^{k_{0}} X(z)-\sum_{i=0}^{k_{0}-1} x[i] z^{k_{0}-i} \\
+\hline \text { Verschiebung rechts} & x\left[k-k_{0}\right], k_{0}>0 & z^{-k_{0}} X(z)+\sum_{i=-k_{0}}^{-1} x[i] z^{-k_{0}-i} \\
+\hline \text { Anfangswertsatz} & \multicolumn{2}{c|}{x[0]=\lim _{z \rightarrow \infty} X(z), \quad \text {falls Grenzwert existiert}} \\
+\hline \text { Endwertsatz} & \multicolumn{2}{c|}{\lim _{k \rightarrow \infty} x[k]=\lim _{z \rightarrow 1}(z-1) X(z), \quad \text {falls X(z) nur Pole mit} |z|<1 \text { oder bei } z=1} \\
+\hline
+\end{array}
+$$
+
+
+
+\subsection{Rücktransformation durch Partialbruchzerlegung}
+
+Die Partialbruchzerlegung von $\widetilde{X}(z)=\frac{X(z)}{z}$ führt auf die Form:
+
+\begin{tabular}{|c|}
+\hline 
+$
+X(z)=\sum_{i \geq 1} g_{i} \cdot z^{i}+\sum_{i} \frac{z \cdot r_{i}}{z-\alpha_{i}}+\sum_{i} \sum_{l=1}^{m_{i}} \frac{z \cdot \tilde{r}_{i, l}}{\left(z-\tilde{\alpha}_{i}\right)^{l}}, \quad g_{i}, \alpha_{i}, \tilde{\alpha}_{i}, r_{i}, \tilde{r}_{i, l} \in \mathbb{C},
+$\\
+\hline 
+\end{tabular}
+
+
+welche für $\mathcal{K}:|z|>r_{0}$ mit den Korrespondenzen 2, 5, 6 und 12 gliedweise zurücktransformiert werden kann.
+
+\subsection{Korrespondenzen der $z$-Transformation}
+
+\begin{tabular}{|c|c|c|c|}
+\hline Nr. & $x[k]$ & $X(z)$ & $\mathcal{K}$ \\
+\hline \hline 1 & $\delta[k]$ & 1 & $z \in \mathbb{C}$ \\
+\hline 2 & $\delta\left[k-k_{0}\right]$ & $z^{-k_{0}}$ & $0<|z|<\infty$ \\
+\hline 3 & $\varepsilon[k]$ & $\frac{z}{z-1}$ & $|z|>1$ \\
+\hline 4 & $k \cdot \varepsilon[k]$ & $\frac{z}{(z-1)^{2}}$ & $|z|>1$ \\
+\hline 5 & $a^{k} \cdot \varepsilon[k]$ & $\frac{z}{z-a}$ & $|z|>|a|$ \\
+\hline 6 & $\left(\begin{array}{c}k \\
+m\end{array}\right) a^{k-m} \cdot \varepsilon[k]$ & $\frac{z}{(z-a)^{m+1}}$ & $|z|>|a|$ \\
+\hline 7 & $\sin \left(\Omega_{0} k\right) \cdot \varepsilon[k]$ & $\frac{z \cdot \sin \left(\Omega_{0}\right)}{z^{2}-2 z \cdot \cos \left(\Omega_{0}\right)+1}$ & $|z|>1$ \\
+\hline 8 & $\cos \left(\Omega_{0} k\right) \cdot \varepsilon[k]$ & $\frac{z \cdot\left[z-\cos \left(\Omega_{0}\right)\right]}{z^{2}-2 z \cdot \cos \left(\Omega_{0}\right)+1}$ & $|z|>1$ \\
+\hline 9 & $a^{k} \cdot \varepsilon[-k-1]$ & $-\frac{z}{z-a}$ & $|a|<|a|$ \\
+\hline 10 & $a^{|k|}, \quad|a|<1$ & $\frac{2}{\mid c \cdot\left(a-\frac{1}{a}\right)}$ \\
+\hline 11 & $\frac{1}{k !} \cdot \varepsilon[k]$ & $e^{\frac{1}{z}}$ & $|z|<\left|\frac{1}{a}\right|$ \\
+\hline
+\end{tabular}
+
+Spezielle Korrespondenzen zur Rücktransformation konj. komplexer Polpaare
+
+\begin{tabular}{|c|c|c|c|}
+\hline 12 & $2|r \| \alpha|^{k} \cos (\varangle \alpha \cdot k+ \varangle r) \cdot \varepsilon[k]$ & $\frac{z \cdot r}{z-\alpha}+\frac{z \cdot r^{*}}{z-\alpha^{*}}$ & $|z|>\alpha$ \\
+\hline 13 & $a^{k} \cdot \frac{\cos \left(\Omega_{0} k+\varphi_{0}\right)}{\cos \left(\varphi_{0}\right)} \cdot \varepsilon[k]$ & $\frac{z(z-d)}{z^{2}-b z+c}, c>\frac{b^{2}}{4}$ & $|z|>\sqrt{c}$ \\
+& $a=\sqrt{c}, \Omega_{0}=\arccos \left(\frac{b}{2 \sqrt{c}}\right), \varphi_{0}=\arctan \left(\frac{2 d-b}{\sqrt{4 c-b^{2}}}\right)$ & \\
+\hline
+\end{tabular}
+
+
+
+\section{C.3 Laplace-Transformation}
+
+\subsection{Definition}
+
+\begin{tabular}{|c|c|}
+\hline zweiseitig: & einseitig: \\
+\hline$X(s)=\int_{-\infty}^{\infty} x(t) e^{-s t} d t$ & $X(s)=\int_{0^{-}}^{\infty} x(t) e^{-s t} d t$ \\
+Konvergenzgebiet $\mathcal{K}: \quad a<\operatorname{Re}\{s\}<b$ & Konvergenzgebiet $\mathcal{K}: \quad \operatorname{Re}\{s\}>a$ \\
+\hline
+\end{tabular}
+
+\subsection{Eigenschaften und Rechenregeln}
+
+\begin{tabular}{|l|c|c|c|}
+\hline & Zeitbereich & Bildbereich & Konvergenz \\
+\hline \hline Linearität & $c_{1} x_{1}(t)+c_{2} x_{2}(t)$ & $c_{1} X_{1}(s)+c_{2} X_{2}(s)$ & $\mathcal{K}_{x_{1}} \cap \mathcal{K}_{x_{2}}$ \\
+\hline Faltung & $x(t) * y(t)$ & $X(s) \cdot Y(s)$ & $\mathcal{K}_{x} \cap \mathcal{K}_{y}$ \\
+\hline Verschiebung & $x\left(t-t_{0}\right)$ & $e^{-s t_{0}} \cdot X(s)$ & $\mathcal{K}_{x}$ \\
+\hline Dämpfung & $e^{a t} \cdot x(t)$ & $X(s-a)$ & $\mathcal{K}_{x}+\operatorname{Re}\{a\}$ \\
+\hline lineare Gewichtung & $t \cdot x(t)$ & $-\frac{d}{d s} X(s)$ & $\mathcal{K}_{x}$ \\
+\hline Differentiation & $\frac{d}{d t} x(t)$ & $s \cdot X(s)$ & $\mathcal{K}_{x}$ \\
+\hline Integration & $\int_{-\infty}^{t} x(\tau) d \tau$ & $\frac{1}{s} \cdot X(s)$ & $\mathcal{K}_{x} \cap\{\operatorname{Re}\{s\}>0\}$ \\
+\hline Skalierung & $x(a t)$ & $\frac{1}{|a|} \cdot X\left(\frac{s}{a}\right)$ & $a \cdot \mathcal{K}_{x}$ \\
+\hline konj. komplexes Signal & $x^{*}(t)$ & $X^{*}(s *)$ & $\mathcal{K}_{x}$ \\
+\hline
+\end{tabular}
+
+\subsection{Spezielle Eigenschaften der einseitigen Laplace-Transformation}
+
+$$
+\begin{array}{|l|c|c|}
+\hline \text { Verschiebung links} & x\left(t+t_{0}\right), t_{0}>0 & e^{s t_{0}}\left[X(s)-\int_{0^{-}}^{t_{0}} x(t) \cdot e^{-s t} d t\right] \\
+\hline \text { Verschiebung rechts} & x\left(t-t_{0}\right), t_{0}>0 & e^{-s t_{0}}\left[X(s)+\int_{-t_{0}}^{0^{-}} x(t) \cdot e^{-s t} d t\right] \\
+\hline \text { Differentiation} & \frac{d}{d t} x(t) &  s \cdot X(s) - x( \left.0^{-}\right)\\
+\hline \text { Anfangswertsatz} & \multicolumn{2}{c|}{x\left(0^{+}\right)=\lim _{s \rightarrow \infty} s \cdot X(s), \quad \text{falls $x\left(0^{+}\right)$ existiert}}\\
+\hline \text { Endwertsatz} & \multicolumn{2}{c|}{\lim _{t \rightarrow \infty} x(t)=\lim _{s \rightarrow 0} s \cdot X(s), \quad \text{falls $\lim _{t \rightarrow \infty} x(t)$ existiert }} \\
+\hline
+\end{array}
+$$
+
+
+
+
+\subsection{Komplexe Umkehrformel der Laplace-Transformation}
+
+$$
+x(t)=\frac{1}{2 \pi j} \int_{\sigma-j \infty}^{\sigma+j \infty} X(s) \cdot e^{s t} d s, \quad \sigma \in \mathcal{K}
+$$
+
+\subsection{Rücktransformation durch Partialbruchzerlegung}
+
+$$
+X(s)=g_{0}+\sum_{i} \frac{r_{i}}{s-\alpha_{i}}+\sum_{i} \sum_{l=1}^{m_{i}} \frac{\tilde{r}_{i, l}}{\left(s-\tilde{\alpha}_{i}\right)^{l}}, \quad g_{i}, \alpha_{i}, \tilde{\alpha}_{i}, r_{i}, \tilde{r}_{i, l} \in \mathbb{C}
+$$
+
+kann für $\mathcal{K}: \operatorname{Re}\{s\}>a_{0}$ mit den Korrespondenzen 1, 4, 5 und 10 gliedweise zurücktransformiert werden.
+
+\subsection{Korrespondenzen der Laplace-Transformation}
+
+\begin{tabular}{|c|c|c|c|}
+\hline Nr. & $x(t)$ & $X(s)$ & $\mathcal{K}$ \\
+\hline \hline 1 & $\delta(t)$ & 1 & $s \in \mathbb{C}$ \\
+\hline 2 & $\varepsilon(t)$ & $\frac{1}{s}$ & $\operatorname{Re}\{s\}>0$ \\
+\hline 3 & $\rho(t)=t \cdot \varepsilon(t)$ & $\frac{1}{s^{2}}$ & $\operatorname{Re}\{s\}>0$ \\
+\hline 4 & $e^{a t} \cdot \varepsilon(t)$ & $\frac{1}{s-a}$ & $\operatorname{Re}\{s\}>\operatorname{Re}\{a\}$ \\
+\hline 5 & $\frac{t^{m}}{m !} e^{a t} \cdot \varepsilon(t)$ & $\frac{1}{(s-a)^{m+1}}$ & $\operatorname{Re}\{s\}>\operatorname{Re}\{a\}$ \\
+\hline 6 & $\sin \left(\omega_{0} t\right) \cdot \varepsilon(t)$ & $\frac{\omega_{0}}{s^{2}+\omega_{0}^{2}}$ & $\operatorname{Re}\{s\}>0$ \\
+\hline 7 & $\cos \left(\omega_{0} t\right) \cdot \varepsilon(t)$ & $\frac{s}{s^{2}+\omega_{0}^{2}}$ & $\operatorname{Re}\{s\}>0$ \\
+\hline 8 & $\sin \left(\omega_{0} t+\varphi_{0}\right) \cdot \varepsilon(t)$ & $\frac{s \cdot \sin \left(\varphi_{0}\right)+\omega_{0} \cdot \cos \left(\varphi_{0}\right)}{s^{2}+\omega_{0}^{2}}$ & $\operatorname{Re}\{s\}>0$ \\
+\hline 9 & $\delta\left(t-t_{0}\right)$ & $e^{-s t_{0}}$ & $s \in \mathbb{C}$ \\
+\hline
+\end{tabular}
+
+\subsection{Spezielle Korrespondenzen zur Rücktransformation konj. komplexer Polpaare}
+
+\begin{tabular}{|c|c|c|c|}
+\hline 10 & $2|r| e^{\operatorname{Re}\{\alpha\} t} \cos (\operatorname{Im}\{\alpha\} t+\varangle r) \varepsilon(t)$ & $\frac{r}{s-\alpha}+\frac{r^{*}}{s-\alpha^{*}}$ & $\operatorname{Re}\{s\}>\operatorname{Re}\{\alpha\}$ \\
+\hline 11 & $e^{a t} \cdot \frac{\cos \left(\omega_{0} t+\varphi_{0}\right)}{\cos \left(\varphi_{0}\right)} \cdot \varepsilon(t)$ & $\frac{s-d}{s^{2}-b s+c}, c>\frac{b^{2}}{4}$ & $\operatorname{Re}\{s\}>\frac{b}{2}$ \\
+&$a=\frac{b}{2}, \omega_{0}=\sqrt{c-\frac{b^{2}}{4}}, \varphi_{0}=\arctan \left(\frac{2 d-b}{\sqrt{4 c-b^{2}}}\right)$ & \\
+\hline
+\end{tabular}
+
+
+
+\section{C.4 Fourier-Transformation}
+
+\begin{tabular}{|c|c|}
+\hline Definition: & Rücktransformation: \\
+\hline$X(f)=\int_{-\infty}^{\infty} x(t) \cdot e^{-j 2 \pi f t} d t$ & $x(t)=\int_{-\infty}^{\infty} X(f) \cdot e^{j 2 \pi f t} d f$ \\
+\hline
+\end{tabular}
+
+Definition über die Kreisfrequenz $\omega=2 \pi f$ :
+
+$X(j \omega)=\int_{-\infty}^{\infty} x(t) \cdot e^{-j \omega t} d t \quad x(t)=\frac{1}{2 \pi} \int_{-\infty}^{\infty} X(j \omega) \cdot e^{j \omega t} d \omega$
+
+\section{Eigenschaften der Fourier-Transformation}
+$$
+\begin{array}{|l|c|c|c|}
+\hline & \text { Zeitbereich } & \multicolumn{2}{c|}{\text { Frequenzbereich }} \\
+\hline \text { Linearity } & c_1 x_1(t)+c_2 x_2(t) & c_1 X_1(f)+c_2 X_2(f) & c_1 X_1(j \omega)+c_2 X_2(j \omega) \\
+\hline \text { Faltung } & x(t) * y(t) & X(f) \cdot Y(f) & X(j \omega) \cdot Y(j \omega) \\
+\hline \text { Multiplikation } & x(t) \cdot y(t) & X(f) * Y(f) & \frac{1}{2 \pi} X(j \omega) * Y(j \omega) \\
+\hline \text { Verschiebung } & x\left(t-t_0\right) & X(f) \cdot e^{-j 2 \pi f t_0} & X(j \omega) \cdot e^{-j \omega t_0} \\
+\hline \text { Modulation } & e^{j 2 \pi f_0 t} \cdot x(t) & X\left(f-f_0\right) & X\left(j\left[\omega-\omega_0\right]\right) \\
+\hline \text { lineare Gewichtung } & t \cdot x(t) & -\frac{1}{j 2 \pi} \frac{d}{d f} X(f) & -\frac{d}{d(j \omega)} X(j \omega) \\
+\hline \text { Differentiation } & \frac{d}{d t} x(t) & j 2 \pi f \cdot X(f) & j \omega \cdot X(j \omega) \\
+\hline \text { Integration } & \int_{-\infty}^t x(\tau) d \tau & \frac{1}{j 2 \pi f} X(f)+ 
+\frac{1}{2} X(0) \delta(f) & \frac{1}{j \omega} X(j \omega)+\pi X(0)  \delta(f)\\
+\hline \text { Skalierung } & x(a t) & \frac{1}{|a|} \cdot X\left(\frac{f}{a}\right) & \frac{1}{|a|} \cdot X\left(\frac{j \omega}{a}\right)\delta(\omega) \\
+\hline \text { Zeitinversion } & x(-t) & X(-f) & X(-j \omega) \\
+\hline \text { konj. komplex } & x^*(t) & X^*(-f) & X^*(-j \omega) \\
+\hline \text { Real part } & x_{\mathrm{R}}(t) & X_{\mathrm{g}^*}(f) & X_{\mathrm{g}^*}(j \omega) \\
+\hline \text { Imaginary part } & j x_{\mathrm{I}}(t) & X_{\mathrm{u}^*}(f) & X_{\mathrm{u}^*}(j \omega) \\
+\hline \text { duality } & X(t)[X(j t)] & x(-f) & 2 \pi x(-\omega) \\
+\hline \text { Parsevalsches Theorem } & \multicolumn{3}{c|}{\int_{-\infty}^{\infty} x(t) \cdot y^*(t) d t=\int_{-\infty}^{\infty} X(f) \cdot Y^*(f) d f=\frac{1}{2 \pi} \int_{-\infty}^{\infty} X(j \omega) \cdot Y^*(j \omega) d \omega} \\
+\hline
+\end{array}
+$$
+$$
+\begin{array}{|c|c|c|c|}
+\hline \text { Nr. } & x(t) & X(f) & X(j \omega) \\
+\hline \hline 1 & \delta(t) & 1 & 1 \\
+\hline 2 & 1 & \delta(f) & 2 \pi \delta(\omega) \\
+\hline 3 & \mathrm{U}_T(t) & \frac{1}{|T|} \mathrm{IH}_{\frac{1}{T}}(f) & \frac{2 \pi}{|T|} \mathrm{U}_{\frac{2 \pi}{T}}(\omega) \\
+\hline 4 & \varepsilon(t) & \frac{1}{2} \delta(f)+\frac{1}{j 2 \pi f} & \pi \delta(\omega)+\frac{1}{j \omega} \\
+\hline 5 & \operatorname{sgn}(t) & \frac{1}{j \pi f} & \frac{2}{j \omega} \\
+\hline 6 & \frac{1}{\pi t} & -j \operatorname{sgn}(f) & -j \operatorname{sgn}(\omega) \\
+\hline 7 & \operatorname{rect}\left(\frac{t}{T}\right)\quad (T=width) & |T| \cdot \operatorname{si}(\pi T f) & |T| \cdot \operatorname{si}\left(\frac{T}{2} \omega\right) \\
+\hline 8 & \operatorname{si}\left(\pi \frac{t}{T}\right) & |T| \cdot \operatorname{rect}(T f) & |T| \cdot \operatorname{rect}\left(\frac{T}{2 \pi} \omega\right) \\
+\hline 9 & \Lambda\left(\frac{t}{T}\right) & |T| \cdot \mathrm{si}^2(\pi T f) & |T| \cdot \operatorname{si}^2\left(\frac{T}{2} \omega\right) \\
+\hline 10 & \mathrm{si}^2\left(\pi \frac{t}{T}\right) & |T| \cdot \Lambda(T f) & |T| \cdot \Lambda\left(\frac{T}{2 \pi} \omega\right) \\
+\hline 11 & e^{j 2 \pi f_0 t} & \delta\left(f-f_0\right) & 2 \pi \delta\left(\omega-\omega_0\right) \\
+\hline 12 & \cos \left(2 \pi f_0 t\right) & \frac{1}{2}\left[\delta\left(f+f_0\right)+\delta\left(f-f_0\right)\right] & \pi\left[\delta\left(\omega+\omega_0\right)+\delta\left(\omega-\omega_0\right)\right] \\
+\hline 13 & \sin \left(2 \pi f_0 t\right) & \frac{1}{2} j\left[\delta\left(f+f_0\right)-\delta\left(f-f_0\right)\right] & \pi j\left[\delta\left(\omega+\omega_0\right)-\delta\left(\omega-\omega_0\right)\right] \\
+\hline 14 & e^{-a^2 t^2} & \frac{\sqrt{\pi}}{a} e^{-\frac{\pi^2 f^2}{a^2}} & \frac{\sqrt{\pi}}{a} e^{-\frac{\omega^2}{4 a^2}} \\
+\hline 15 & e^{-\frac{|t|}{T}} & \frac{2 T}{1+(2 \pi T f)^2} & \frac{2 T}{1+(T \omega)^2} \\
+\hline
+\end{array}
+$$
+Where 
+$$
+\operatorname{sinc}(x)=\frac{\sin \pi x}{\pi x}
+$$
+$$
+\operatorname{si}(x)=\frac{\sin x}{x}
+$$

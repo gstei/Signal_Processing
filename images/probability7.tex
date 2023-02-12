@@ -1,0 +1,82 @@
+% \href{https://tikz.net/gauss3ians/}{\begin{tikzpicture}
+\documentclass[14pt,border=10pt,subpreambles=true]{standalone}
+\usepackage{amsmath} % for \dfrac
+\usepackage{tikz}
+\tikzset{>=latex} % for LaTeX arrow head
+\usepackage{pgfplots} % for the axis environment
+\usepackage{xcolor}
+\usepackage[outline]{contour} % halo around text
+\contourlength{1.2pt}
+\usetikzlibrary{positioning,calc}
+\usetikzlibrary{backgrounds}% required for 'inner frame sep'
+%\usepackage{adjustbox} % add whitespace (trim)
+
+% define gauss3ian pdf and cdf3
+\pgfmathdeclarefunction{gauss3}{3}{%
+  \pgfmathparse{1/(#3*sqrt(2*pi))*exp(-((#1-#2)^2)/(2*#3^2))}%
+}
+\pgfmathdeclarefunction{cdf3}{3}{%
+  \pgfmathparse{1/(1+exp(-0.07056*((#1-#2)/#3)^3 - 1.5976*(#1-#2)/#3))}%
+}
+
+\colorlet{mydarkblue}{blue!30!black}
+
+% to fill an area under function
+\usepgfplotslibrary{fillbetween}
+\usetikzlibrary{patterns}
+\pgfplotsset{compat=1.12} % TikZ coordinates <-> axes coordinates
+% https://tex.stackexchange.com/questions/240642/add-vertical-line-of-equation-x-2-and-shade-a-region-in-graph-by-pgfplots
+
+% plot aspect ratio
+%\def\axisdefaultwidth{8cm}
+%\def\axisdefaultheight{6cm}
+
+% number of sample points
+
+\begin{document}
+\begin{tikzpicture}
+\message{CLs, p-value^^J}
+  \def\N{50};
+  \def\q{6.3};
+  \def\B{8.3};
+  \def\S{4};
+  \def\Bs{1.0};
+  \def\Ss{1.5};
+  \def\xmax{\B+3.2*\Bs};
+  \def\ymin{{-0.15*gauss3(\B,\B,\Bs)}};
+	\begin{axis}[every axis plot post/.append style={
+               mark=none,domain={-0.05*(\xmax)}:{1.08*\xmax},samples=\N,smooth},
+               xmin={-0.1*(\xmax)}, xmax=\xmax,
+               ymin=\ymin, ymax={1.1*gauss3(\B,\B,\Bs)},
+               axis lines=middle,
+               axis line style=thick,
+               enlargelimits=upper, % extend the axes a bit to the right and top
+               ticks=none,
+               xlabel=$q$,
+               every axis x label/.style={at={(current axis.right of origin)},anchor=north west},
+               width=0.7*\textwidth, height=0.5*\textwidth,
+               y=250pt
+              ]
+    
+    % PLOTS
+    \addplot[blue, name path=B,thick] {gauss3(x,\B,\Bs)};
+    \addplot[red,  name path=S,thick] {gauss3(x,\S,\Ss)};
+    \addplot[black,dashed,thick]
+      coordinates {(\q, {0.95*gauss3(\B,\B,\Bs)}) (\q, \ymin)}
+      node[below=3pt,anchor=south west] {$q_\text{cut}$};
+    
+    % FILL
+    \path[name path=xaxis]
+      (0,0) -- (\pgfkeysvalueof{/pgfplots/xmax},0); %\pgfkeysvalueof{/pgfplots/xmin}
+    \addplot[white!50!blue] fill between[of=xaxis and B, soft clip={domain=0:\q}];
+    \addplot[white!50!red]  fill between[of=xaxis and S, soft clip={domain=\q:\xmax}];
+    
+    % LABELS
+    \node[above=2pt,     black!20!blue] at (   \B,  {gauss3(\B,\B,\Bs)}) {$f(q|H_0)$};
+    \node[above left=2pt,black!20!red]  at (1.05*\S,{gauss3(\S,\S,\Ss)}) {$f(q|H_1)$};
+    \node[left, black!20!blue,scale=1.3] at ({0.9*\q},{gauss3(1.04*\q,\B,\Bs)}) {\strut$p_\text{b}$};
+    \node[right,black!20!red, scale=1.3] at ({1.1*\q},{gauss3(1.04*\q,\B,\Bs)}) {\strut$p_\text{s+b}$};
+    
+  \end{axis}
+\end{tikzpicture}
+\end{document}
