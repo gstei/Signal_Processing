@@ -11,3 +11,12 @@ main.snm
 *.gz
 main.toc
 *.sta
+main.4ct
+main.4tc
+main.dvi
+main.idv
+main.lg
+main.tmp
+main.xref
+tmp/*
+my_make4ht.cmd
